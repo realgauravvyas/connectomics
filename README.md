@@ -34,14 +34,14 @@ The **CONNECTOMICS** suite brings together multiple distinct in-silico modeling 
                                               CONNECTOMICS SUITE
                                  (Google Research × HHMI Janelia MaleCNS Data)
                                                        │
-      ┌───────────────────┬───────────────────┬────────┴──────────┬───────────────────┬───────────────────┐
-      ▼                   ▼                   ▼                   ▼                   ▼                   ▼
-  [ MUSCA ]            [ 166k ]         [ SYNAPTICA ]       [ FlyGambit ]       [ FlySprint ]       [ DROSOMIND ]
-Full EM Connectome  Spiking Dynamics  3D Neuropil Circuit  Reinforce Chess     Gait Evolution      Cybernetic Organism
-• 166.7k Reconst.   • 166k SNN Neurons• 12 Neuropil Hubs   • Sparse Wiring     • 94-Weight CPG     • Articulated 3D Body
-• 2.82M Edges       • 2.3M Synapses   • Hebbian Memory     • Brain Lesioning   • 4 Track Events    • Courtship Song Synth
-• Reverse Circuit   • LIF Dynamics    • Sensory Injection  • REINFORCE + Value • 1-5 Fluorescent   • Ring Attractor Compass
-• Atlas / Poke      • Conditioning    • Ambient Free Fire  • Zero-Asset Sound  • Director Camera   • Male P1 Hub (Cell '26)
+  ┌──────────────┬──────────────┬──────────────┬───────┴──────┬──────────────┬──────────────┬──────────────┬──────────────┐
+  ▼              ▼              ▼              ▼              ▼              ▼              ▼              ▼
+[MUSCA]       [166k]       [SYNAPTICA]   [FlyGambit]    [FlySprint]    [FLYMIND]      [FLYKICK]     [DROSOMIND]
+Full EM       LIF Spiking  3D Neuropils  Sparse RL      Gait Evolution Sensory Lab    Connectome FB  Cybernetic
+• 166.7k Soma • 166k SNN   • 12 Hubs     • Chess Engine • 94-Weight CPG• 42 Classes   • 5v5 Match    • Articulated
+• 2.82M Edges • 2.3M Syn   • Hebbian     • Lesion Sandb • 4 Distances  • Oscilloscope • Brain Cam    • Courtship Song
+• Reverse Cir • Dopamine   • Sensory     • REINFORCE    • Hurdles Jump • Song Synth   • Possession   • Compass Ring
+• Atlas/Poke  • Conditioning• Free Fire  • Zero Deps    • Director Cam • Touch/Smell  • Web Audio    • Male P1 Hub
 ```
 
 ---
@@ -55,6 +55,8 @@ Full EM Connectome  Spiking Dynamics  3D Neuropil Circuit  Reinforce Chess     G
 | [**SYNAPTICA**](synaptica/) | Macro Neuropil Circuit Play | 12 mapped neuropils<br>125M mapped synapses | Topologically-routed action potential cascades | **Hebbian Learning:** Real-time Mushroom Body synaptic plasticity gauge | [Launch SYNAPTICA](https://realgauravvyas.github.io/connectomics/synaptica/) |
 | [**FlyGambit**](fly-gambit/) | Sparse Reinforcement Learning | ~1,200 neurons<br>~28,000 synapses | Biologically sparse fan-in ($k=20$) + REINFORCE value baseline | **Neuropil Lesioning:** Silence Optic, Lobula, Mushroom Body, or Central Complex mid-game | [Launch FlyGambit](https://realgauravvyas.github.io/connectomics/fly-gambit/) |
 | [**FlySprint**](fly-sprint/) | Genetic Biomechanical Evolution | 10 $\to$ 6 $\to$ 4 MLP<br>94 weights / runner | Genetic algorithm evolving Central Pattern Generator (CPG) locomotion | **Track Competition:** 100m, 200m, 400m pacing & 10-barrier hurdles | [Launch FlySprint](https://realgauravvyas.github.io/connectomics/fly-sprint/) |
+| [**FLYMIND**](flymind/) | Sensory Electrophysiology Lab | 42 neuron classes<br>642 synaptic edges | Event-driven firing cascades + real-time oscilloscope & BFS tracer | **Multi-Modal Play:** Touch poke, odor conditioning, courtship acoustic synthesis | [Launch FLYMIND](https://realgauravvyas.github.io/connectomics/flymind/) |
+| [**FLYKICK**](flykick/) | Team Sports Connectome Sim | 10 flies $\times$ 11 neurons<br>110 active nodes | Autonomous multi-agent coordination + manual Central Complex hijack | **Neural Football:** 2 teams $\times$ 5 flies, live Brain Cam, charge kicks | [Launch FLYKICK](https://realgauravvyas.github.io/connectomics/flykick/) |
 | [**DROSOMIND**](https://github.com/realgauravvyas/drosomind) | Closed-Loop Bio-Organism | 166,000 neurons<br>125M synapses | Dual-split connectome Holo-Deck + Articulated male fly body | **Acoustic Synthesizer:** Web Audio species-specific courtship song (Pulse & Sine) | [Launch DROSOMIND](https://realgauravvyas.github.io/drosomind/) |
 
 ---
@@ -117,6 +119,12 @@ cd fly-gambit && node test/smoke.mjs && cd ..
 
 # FlySprint genetic algorithm gait evolution verification
 cd fly-sprint && node test/smoke.mjs && cd ..
+
+# FLYMIND 4-suite neural cascade and mushroom body verification
+cd flymind && npm test && cd ..
+
+# FLYKICK 16-check physics, AI match, and possession verification
+cd flykick && node tools/test-engine.js && cd ..
 ```
 
 ---

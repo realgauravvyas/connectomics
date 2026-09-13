@@ -1,0 +1,16 @@
+{
+  "name": "flykick",
+  "version": "1.0.0",
+  "description": "Connectome football — two teams of neural-circuit flies. Possess any fly, either team, any time. Zero dependencies.",
+  "repository": "github:realgauravvyas/flykick",
+  "license": "MIT",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node tools/demo.js",
+    "test": "node tools/test-engine.js",
+    "audit": "node tools/play-audit.cjs"
+  },
+  "devDependencies": {
+    "ws": "^8.21.3"
+  }
+}
