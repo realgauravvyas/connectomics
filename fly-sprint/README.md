@@ -124,7 +124,6 @@ FlySprint is an integral component of the [**CONNECTOMICS**](https://realgauravv
 - 🔬 **[MUSCA](https://realgauravvyas.github.io/connectomics/musca/):** 166,700 reconstructed neurons with 2.82M edges and reverse behavior search.
 - ⚡ **[166k](https://realgauravvyas.github.io/connectomics/166k/):** Large-scale Leaky Integrate-and-Fire (LIF) spiking electrophysiology with dopamine conditioning.
 - 🌌 **[SYNAPTICA](https://realgauravvyas.github.io/connectomics/synaptica/):** 12 mapped neuropil hubs with real-time Hebbian plasticity tracking.
-- 🪰 **[DROSOMIND](https://realgauravvyas.github.io/drosomind/):** Articulated 3D male fly with bio-acoustic courtship song synthesis.
 
 ---
 

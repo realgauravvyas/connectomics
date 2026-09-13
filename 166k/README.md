@@ -128,7 +128,6 @@ npm run serve
 - 🌐 **Personal Website & Academic Profile:** [socialpsychology.org/member/gaurav-vyas](https://www.socialpsychology.org/member/gaurav-vyas)  
 - 🔶 **Interactive Portfolio:** [realgauravvyas.github.io](https://realgauravvyas.github.io/)  
 - 🐙 **GitHub:** [@realgauravvyas](https://github.com/realgauravvyas)  
-- 🪰 **Sister Simulator:** [DROSOMIND](https://realgauravvyas.github.io/drosomind/)
 
 ---
 

@@ -34,14 +34,14 @@ The **CONNECTOMICS** suite brings together multiple distinct in-silico modeling 
                                               CONNECTOMICS SUITE
                                  (Google Research × HHMI Janelia MaleCNS Data)
                                                        │
-  ┌──────────────┬──────────────┬──────────────┬───────┴──────┬──────────────┬──────────────┬──────────────┬──────────────┐
-  ▼              ▼              ▼              ▼              ▼              ▼              ▼              ▼
-[MUSCA]       [166k]       [SYNAPTICA]   [FlyGambit]    [FlySprint]    [FLYMIND]      [FLYKICK]     [DROSOMIND]
-Full EM       LIF Spiking  3D Neuropils  Sparse RL      Gait Evolution Sensory Lab    Connectome FB  Cybernetic
-• 166.7k Soma • 166k SNN   • 12 Hubs     • Chess Engine • 94-Weight CPG• 42 Classes   • 5v5 Match    • Articulated
-• 2.82M Edges • 2.3M Syn   • Hebbian     • Lesion Sandb • 4 Distances  • Oscilloscope • Brain Cam    • Courtship Song
-• Reverse Cir • Dopamine   • Sensory     • REINFORCE    • Hurdles Jump • Song Synth   • Possession   • Compass Ring
-• Atlas/Poke  • Conditioning• Free Fire  • Zero Deps    • Director Cam • Touch/Smell  • Web Audio    • Male P1 Hub
+  ┌──────────────┬──────────────┬──────────────┬───────┴──────┬──────────────┬──────────────┬──────────────┐
+  ▼              ▼              ▼              ▼              ▼              ▼              ▼
+[MUSCA]       [166k]       [SYNAPTICA]   [FlyGambit]    [FlySprint]    [FLYMIND]      [FLYKICK]
+Full EM       LIF Spiking  3D Neuropils  Sparse RL      Gait Evolution Sensory Lab    Connectome FB
+• 166.7k Soma • 166k SNN   • 12 Hubs     • Chess Engine • 94-Weight CPG• 42 Classes   • 5v5 Match
+• 2.82M Edges • 2.3M Syn   • Hebbian     • Lesion Sandb • 4 Distances  • Oscilloscope • Brain Cam
+• Reverse Cir • Dopamine   • Sensory     • REINFORCE    • Hurdles Jump • Song Synth   • Possession
+• Atlas/Poke  • Conditioning• Free Fire  • Zero Deps    • Director Cam • Touch/Smell  • Web Audio
 ```
 
 ---
@@ -57,7 +57,6 @@ Full EM       LIF Spiking  3D Neuropils  Sparse RL      Gait Evolution Sensory L
 | [**FlySprint**](fly-sprint/) | Genetic Biomechanical Evolution | 10 $\to$ 6 $\to$ 4 MLP<br>94 weights / runner | Genetic algorithm evolving Central Pattern Generator (CPG) locomotion | **Track Competition:** 100m, 200m, 400m pacing & 10-barrier hurdles | [Launch FlySprint](https://realgauravvyas.github.io/connectomics/fly-sprint/) |
 | [**FLYMIND**](flymind/) | Sensory Electrophysiology Lab | 42 neuron classes<br>642 synaptic edges | Event-driven firing cascades + real-time oscilloscope & BFS tracer | **Multi-Modal Play:** Touch poke, odor conditioning, courtship acoustic synthesis | [Launch FLYMIND](https://realgauravvyas.github.io/connectomics/flymind/) |
 | [**FLYKICK**](flykick/) | Team Sports Connectome Sim | 10 flies $\times$ 11 neurons<br>110 active nodes | Autonomous multi-agent coordination + manual Central Complex hijack | **Neural Football:** 2 teams $\times$ 5 flies, live Brain Cam, charge kicks | [Launch FLYKICK](https://realgauravvyas.github.io/connectomics/flykick/) |
-| [**DROSOMIND**](https://github.com/realgauravvyas/drosomind) | Closed-Loop Bio-Organism | 166,000 neurons<br>125M synapses | Dual-split connectome Holo-Deck + Articulated male fly body | **Acoustic Synthesizer:** Web Audio species-specific courtship song (Pulse & Sine) | [Launch DROSOMIND](https://realgauravvyas.github.io/drosomind/) |
 
 ---
 
@@ -157,7 +156,6 @@ Pushing to the `main` branch automatically deploys the suite to:
 - 🌐 **Personal Website & Academic Profile:** [socialpsychology.org/member/gaurav-vyas](https://www.socialpsychology.org/member/gaurav-vyas)  
 - 🔶 **Interactive Portfolio:** [realgauravvyas.github.io](https://realgauravvyas.github.io/)  
 - 🐙 **GitHub:** [@realgauravvyas](https://github.com/realgauravvyas)  
-- 🪰 **Living Fly Simulator:** [DROSOMIND](https://realgauravvyas.github.io/drosomind/)
 
 ---
 
