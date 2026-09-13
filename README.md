@@ -19,14 +19,68 @@
 
 > 🌐 **Experience the Complete Suite Live Online:**  
 > 👉 **[https://realgauravvyas.github.io/connectomics/](https://realgauravvyas.github.io/connectomics/)**  
-> *Four interconnected neuro-computational paradigms running client-side in your web browser with zero backend, zero build steps, and zero dependencies.*
+> *Seven interconnected neuro-computational paradigms running client-side in your web browser with zero backend, zero build steps, and zero dependencies.*
 
 Inspired by the landmark Google Research, Howard Hughes Medical Institute (HHMI Janelia), and FlyEM Consortium publication:  
 **"Sexual dimorphism in the complete connectome of the Drosophila male central nervous system"** (*Cell*, September 2026).
 
 ---
 
+## 🖥️ Dashboard Gallery
+
+<p align="center">
+  <b>MUSCA</b> — Full EM Connectome Atlas (166,700 neurons)<br>
+  <a href="https://realgauravvyas.github.io/connectomics/musca/">
+    <img src="musca/docs/hero-atlas.png" alt="MUSCA Dashboard" width="720" />
+  </a>
+</p>
+
+<p align="center">
+  <b>166k</b> — Spiking Neural Network Electrophysiology<br>
+  <a href="https://realgauravvyas.github.io/connectomics/166k/">
+    <img src="166k/shot.png" alt="166k Dashboard" width="720" />
+  </a>
+</p>
+
+<p align="center">
+  <b>SYNAPTICA</b> — 3D Neuropil Circuit Play<br>
+  <a href="https://realgauravvyas.github.io/connectomics/synaptica/">
+    <img src="synaptica/assets/screenshot.png" alt="SYNAPTICA Dashboard" width="720" />
+  </a>
+</p>
+
+<p align="center">
+  <b>FlyGambit</b> — Sparse Reinforcement Learning Chess<br>
+  <a href="https://realgauravvyas.github.io/connectomics/fly-gambit/">
+    <img src="fly-gambit/assets/screens/hero.png" alt="FlyGambit Dashboard" width="720" />
+  </a>
+</p>
+
+<p align="center">
+  <b>FlySprint</b> — Genetic Locomotion Evolution<br>
+  <a href="https://realgauravvyas.github.io/connectomics/fly-sprint/">
+    <img src="fly-sprint/assets/screens/race-100m.png" alt="FlySprint Dashboard" width="720" />
+  </a>
+</p>
+
+<p align="center">
+  <b>FLYMIND</b> — Sensory Electrophysiology Lab<br>
+  <a href="https://realgauravvyas.github.io/connectomics/flymind/">
+    <img src="flymind/assets/demo-arena.png" alt="FLYMIND Dashboard" width="720" />
+  </a>
+</p>
+
+<p align="center">
+  <b>FLYKICK</b> — Connectome Football<br>
+  <a href="https://realgauravvyas.github.io/connectomics/flykick/">
+    <img src="flykick/assets/demo-match.png" alt="FLYKICK Dashboard" width="720" />
+  </a>
+</p>
+
+---
+
 ## 🌟 The Simulation Suite at a Glance
+
 
 The **CONNECTOMICS** suite brings together multiple distinct in-silico modeling paradigms, spanning from micro-scale electron-microscopy connectivity matrices to whole-organism cybernetic embodiment.
 
