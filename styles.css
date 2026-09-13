@@ -335,6 +335,18 @@ header.site-header {
   border: 1px solid rgba(255, 183, 3, 0.3);
 }
 
+.badge-gambit {
+  background: rgba(168, 85, 247, 0.15);
+  color: #c084fc;
+  border: 1px solid rgba(192, 132, 252, 0.35);
+}
+
+.badge-sprint {
+  background: rgba(16, 185, 129, 0.15);
+  color: #6ee7b7;
+  border: 1px solid rgba(110, 231, 183, 0.35);
+}
+
 .card-name {
   font-family: var(--font-display);
   font-size: 26px;
@@ -454,6 +466,28 @@ header.site-header {
 .btn-amber:hover {
   background: #ffc42e;
   box-shadow: 0 0 20px rgba(255, 183, 3, 0.4);
+  transform: translateY(-1px);
+}
+
+.btn-purple {
+  background: #a855f7;
+  color: #050a12;
+}
+
+.btn-purple:hover {
+  background: #c084fc;
+  box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+  transform: translateY(-1px);
+}
+
+.btn-lime {
+  background: #10b981;
+  color: #050a12;
+}
+
+.btn-lime:hover {
+  background: #34d399;
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
   transform: translateY(-1px);
 }
 

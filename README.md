@@ -31,17 +31,17 @@ Inspired by the landmark Google Research, Howard Hughes Medical Institute (HHMI 
 The **CONNECTOMICS** suite brings together multiple distinct in-silico modeling paradigms, spanning from micro-scale electron-microscopy connectivity matrices to whole-organism cybernetic embodiment.
 
 ```
-                                  CONNECTOMICS SUITE
-                   (Google Research × HHMI Janelia MaleCNS Data)
-                                         │
-     ┌───────────────────┬───────────────┴───────────────┬───────────────────┐
-     ▼                   ▼                               ▼                   ▼
- [ MUSCA ]            [ 166k ]                     [ SYNAPTICA ]       [ DROSOMIND ]
-Full EM Connectome  Spiking Neural Network        3D Neuropil Circuit  Cybernetic Organism
-• 166.7k Reconst.   • 166k Procedural Neurons     • 12 Neuropil Hubs   • Articulated 3D Body
-• 2.82M Edges       • 2.3M Synapses               • Hebbian Memory     • Courtship Song Synth
-• Reverse Circuit   • LIF Spiking Dynamics        • Sensory Injection  • Ring Attractor Compass
-• Atlas / Poke      • Aversive Conditioning       • Free Fire / Ambient• Male P1 Hub (Cell '26)
+                                              CONNECTOMICS SUITE
+                                 (Google Research × HHMI Janelia MaleCNS Data)
+                                                       │
+      ┌───────────────────┬───────────────────┬────────┴──────────┬───────────────────┬───────────────────┐
+      ▼                   ▼                   ▼                   ▼                   ▼                   ▼
+  [ MUSCA ]            [ 166k ]         [ SYNAPTICA ]       [ FlyGambit ]       [ FlySprint ]       [ DROSOMIND ]
+Full EM Connectome  Spiking Dynamics  3D Neuropil Circuit  Reinforce Chess     Gait Evolution      Cybernetic Organism
+• 166.7k Reconst.   • 166k SNN Neurons• 12 Neuropil Hubs   • Sparse Wiring     • 94-Weight CPG     • Articulated 3D Body
+• 2.82M Edges       • 2.3M Synapses   • Hebbian Memory     • Brain Lesioning   • 4 Track Events    • Courtship Song Synth
+• Reverse Circuit   • LIF Dynamics    • Sensory Injection  • REINFORCE + Value • 1-5 Fluorescent   • Ring Attractor Compass
+• Atlas / Poke      • Conditioning    • Ambient Free Fire  • Zero-Asset Sound  • Director Camera   • Male P1 Hub (Cell '26)
 ```
 
 ---
@@ -53,6 +53,8 @@ Full EM Connectome  Spiking Neural Network        3D Neuropil Circuit  Cyberneti
 | [**MUSCA**](musca/) | Reconstructed EM Connectome | 166,700 neurons<br>2,822,334 edges | Reconstructed 3D soma coordinates + 1.1M synapse point-cloud | **Reverse Search:** 9 verified sensory-motor circuits (escape jump, song, odor, shadow) | [Launch MUSCA](https://realgauravvyas.github.io/connectomics/musca/) |
 | [**166k**](166k/) | Large-Scale SNN Electrophysiology | 166,000 neurons<br>2,300,000 synapses | Leaky Integrate-and-Fire (LIF) + 4:1 E/I population balance | **Associative Conditioning:** PPL1 dopamine shock pairing + ablation proof | [Launch 166k](https://realgauravvyas.github.io/connectomics/166k/) |
 | [**SYNAPTICA**](synaptica/) | Macro Neuropil Circuit Play | 12 mapped neuropils<br>125M mapped synapses | Topologically-routed action potential cascades | **Hebbian Learning:** Real-time Mushroom Body synaptic plasticity gauge | [Launch SYNAPTICA](https://realgauravvyas.github.io/connectomics/synaptica/) |
+| [**FlyGambit**](fly-gambit/) | Sparse Reinforcement Learning | ~1,200 neurons<br>~28,000 synapses | Biologically sparse fan-in ($k=20$) + REINFORCE value baseline | **Neuropil Lesioning:** Silence Optic, Lobula, Mushroom Body, or Central Complex mid-game | [Launch FlyGambit](https://realgauravvyas.github.io/connectomics/fly-gambit/) |
+| [**FlySprint**](fly-sprint/) | Genetic Biomechanical Evolution | 10 $\to$ 6 $\to$ 4 MLP<br>94 weights / runner | Genetic algorithm evolving Central Pattern Generator (CPG) locomotion | **Track Competition:** 100m, 200m, 400m pacing & 10-barrier hurdles | [Launch FlySprint](https://realgauravvyas.github.io/connectomics/fly-sprint/) |
 | [**DROSOMIND**](https://github.com/realgauravvyas/drosomind) | Closed-Loop Bio-Organism | 166,000 neurons<br>125M synapses | Dual-split connectome Holo-Deck + Articulated male fly body | **Acoustic Synthesizer:** Web Audio species-specific courtship song (Pulse & Sine) | [Launch DROSOMIND](https://realgauravvyas.github.io/drosomind/) |
 
 ---
@@ -109,6 +111,12 @@ cd 166k && node tools/analyze.mjs && cd ..
 
 # MUSCA 9-circuit biological reverse search verification
 cd musca && python tools/behaviours.py && cd ..
+
+# FlyGambit 100-game reinforcement learning verification
+cd fly-gambit && node test/smoke.mjs && cd ..
+
+# FlySprint genetic algorithm gait evolution verification
+cd fly-sprint && node test/smoke.mjs && cd ..
 ```
 
 ---

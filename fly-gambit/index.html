@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FlyGambit — a fruit fly learns chess, live</title>
+<meta name="description" content="A connectome-inspired neural brain modeled on the male Drosophila fruit-fly brain mapping learns chess live in your browser. Watch every synapse fire.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/style.css">
+<script src="vendor/three.min.js"></script>
+<script src="js/brain-viz.js"></script>
+<script src="js/chart.js"></script>
+<script src="js/audio.js"></script>
+</head>
+<body>
+<div id="scene"></div>
+<div id="vignette"></div>
+
+<header id="topbar">
+  <div class="brand">
+    <a href="../" style="display:inline-flex;align-items:center;gap:4px;text-decoration:none;color:#5ff;font-size:11px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;margin-right:12px;padding:4px 9px;background:rgba(95,255,255,0.08);border:1px solid rgba(95,255,255,0.25);border-radius:6px;transition:all .2s">← HUB</a>
+    <svg viewBox="0 0 48 48" width="34" height="34" aria-hidden="true">
+      <ellipse cx="24" cy="30" rx="9" ry="13" fill="none" stroke="#5ff" stroke-width="1.6" opacity="0.7"/>
+      <circle cx="24" cy="13" r="7" fill="none" stroke="#f5a" stroke-width="1.6" opacity="0.9"/>
+      <path d="M6 20 Q16 12 22 17 M42 20 Q32 12 26 17" fill="none" stroke="#5ff" stroke-width="1.4" opacity="0.6"/>
+      <circle cx="24" cy="30" r="2" fill="#ff4"/>
+    </svg>
+    <div>
+      <h1>FLY<span>GAMBIT</span></h1>
+      <p class="tag">a Drosophila connectome learns chess, live in your browser</p>
+    </div>
+  </div>
+  <div class="credit">
+    <a class="ghlink" href="https://github.com/realgauravvyas/connectomics/tree/main/fly-gambit" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg> source &amp; live demo on GitHub</a>
+    · <a href="https://github.com/realgauravvyas" target="_blank" rel="noopener">@realgauravvyas</a>
+    · inspired by <a href="https://research.google/blog/a-connectomics-milestone-mapping-the-complete-male-fruit-fly-brain/" target="_blank" rel="noopener">Google Research's fly-brain map</a>
+  </div>
+</header>
+
+<main>
+  <!-- LEFT: telemetry -->
+  <aside id="panel-left" class="glass">
+    <h2>NEURAL TELEMETRY</h2>
+    <div class="stat-grid">
+      <div class="stat"><b id="st-games">0</b><span>games played</span></div>
+      <div class="stat"><b id="st-plies">0</b><span>moves decided</span></div>
+      <div class="stat"><b id="st-neurons">—</b><span>neurons</span></div>
+      <div class="stat"><b id="st-syn">—</b><span>synapses</span></div>
+      <div class="stat"><b id="st-caps">0%</b><span>capture rate</span></div>
+      <div class="stat"><b id="st-acc">0%</b><span>greedy agreement</span></div>
+      <div class="stat"><b id="st-ent">—</b><span>policy entropy</span></div>
+      <div class="stat"><b id="st-gps">0</b><span>games / sec</span></div>
+    </div>
+    <h3>LEARNING CURVES</h3>
+    <canvas id="chart" width="300" height="110"></canvas>
+    <div class="legend"><i class="c-caps"></i>capture rate <i class="c-acc"></i>agreement</div>
+    <h3>BRAIN REGIONS <em>silence to see it forget</em></h3>
+    <div id="regions"></div>
+    <div class="hint">drag = orbit · scroll = zoom · space = pause</div>
+  </aside>
+
+  <!-- RIGHT: board + controls -->
+  <aside id="panel-right" class="glass">
+    <div id="status-banner" class="hide"></div>
+    <div id="board"></div>
+    <div class="conf">
+      <div class="conf-label">move confidence</div>
+      <div class="conf-bar"><div id="conf-fill"></div></div>
+    </div>
+    <div id="moves"></div>
+    <div class="controls">
+      <div class="modes">
+        <button id="mode-replay" class="mode active">REPLAY</button>
+        <button id="mode-turbo" class="mode">TURBO</button>
+        <button id="mode-human" class="mode">YOU vs FLY</button>
+      </div>
+      <label class="slider-row">speed
+        <input id="speed" type="range" min="1" max="10" value="5">
+      </label>
+      <div class="btn-row">
+        <button id="btn-pause" class="big">PAUSE</button>
+        <button id="btn-reset" class="big danger">RESET BRAIN</button>
+      </div>
+      <div class="btn-row">
+        <button id="btn-sound" class="big">SOUND OFF</button>
+        <a class="big github-cta" href="https://github.com/realgauravvyas/fly-gambit" target="_blank" rel="noopener">STAR ON GITHUB</a>
+      </div>
+      <div class="note">by <a href="https://github.com/realgauravvyas" target="_blank" rel="noopener">@realgauravvyas</a> — progress auto-saves to this browser</div>
+      <div id="save-note" class="note"></div>
+    </div>
+    <div id="human-hint" class="note hide">You play <b>white</b>. The fly plays black — and learns from your games.</div>
+  </aside>
+</main>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

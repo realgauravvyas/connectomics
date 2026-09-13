@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FlySprint — evolution learns to run, live in your browser</title>
+<meta name="description" content="1 to 5 Drosophila athletes with tiny evolved brains race the 100m, 200m, 400m and hurdles. Every gait is learned live in your tab.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="css/style.css">
+<script src="vendor/three.min.js"></script>
+<script src="js/fly3d.js"></script>
+<script src="js/chart.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/brain2d.js"></script>
+</head>
+<body>
+<div id="scene"></div>
+<div id="vignette"></div>
+<div id="flash"></div>
+
+<header id="topbar">
+  <div class="brand">
+    <a href="../" style="display:inline-flex;align-items:center;gap:4px;text-decoration:none;color:#6bffb0;font-size:11px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;margin-right:12px;padding:4px 9px;background:rgba(107,255,176,0.08);border:1px solid rgba(107,255,176,0.25);border-radius:6px;transition:all .2s">← HUB</a>
+    <svg viewBox="0 0 48 48" width="34" height="34" aria-hidden="true">
+      <path d="M4 34 L16 30 L28 34 L44 26" fill="none" stroke="#6bffb0" stroke-width="2.4"/>
+      <ellipse cx="26" cy="21" rx="7" ry="4.6" fill="none" stroke="#ff5540" stroke-width="1.8" transform="rotate(-18 26 21)"/>
+      <circle cx="33" cy="18.5" r="2.2" fill="#ffcf5f"/>
+      <path d="M20 15 L14 8 M24 14 L22 6" stroke="#5fe8ff" stroke-width="1.4" fill="none"/>
+    </svg>
+    <div>
+      <h1>FLY<span>SPRINT</span></h1>
+      <p class="tag">1–5 flies. evolved gaits. one track. learning lives in your tab</p>
+    </div>
+  </div>
+  <div class="credit">
+    <a class="ghlink" href="https://github.com/realgauravvyas/connectomics/tree/main/fly-sprint" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg> source on GitHub</a>
+    · <a href="https://github.com/realgauravvyas" target="_blank" rel="noopener">@realgauravvyas</a>
+    · sibling of <a href="../fly-gambit/" target="_self">FlyGambit</a>
+  </div>
+</header>
+
+<main>
+  <aside id="panel-left" class="glass">
+    <h2>EVENT &amp; SQUAD</h2>
+    <div id="events" class="chips"></div>
+    <div class="sublabel">flies on the track</div>
+    <div id="lanes" class="chips small"></div>
+    <h2>TRAINING</h2>
+    <div class="stat-grid">
+      <div class="stat"><b id="st-gen">0</b><span>generation</span></div>
+      <div class="stat"><b id="st-best">—</b><span>best time</span></div>
+      <div class="stat"><b id="st-pop">94</b><span>weights / fly</span></div>
+      <div class="stat"><b id="st-gps">0</b><span>gens / sec</span></div>
+    </div>
+    <canvas id="chart" width="300" height="100"></canvas>
+    <div class="legend"><i class="c-curve"></i>champion time per generation</div>
+    <h3>THE GAIT BRAIN <em id="brain-who">GFP</em></h3>
+    <canvas id="brain" width="290" height="150"></canvas>
+    <div class="hint">drag = orbit-free cinema · your camera is director-controlled · space = pause</div>
+  </aside>
+
+  <aside id="panel-right" class="glass">
+    <div id="status-banner" class="hide"></div>
+    <h2>LEADERBOARD — <span id="lb-event">100 m Dash</span></h2>
+    <div id="standings"></div>
+    <div class="controls">
+      <div class="btn-row">
+        <button id="btn-train" class="big">TRAIN</button>
+        <button id="btn-race" class="big race">RACE DAY</button>
+      </div>
+      <div class="modes">
+        <button class="mode rspeed active" data-ms="1">1×</button>
+        <button class="mode rspeed" data-ms="2">2×</button>
+        <button class="mode rspeed" data-ms="4">4×</button>
+      </div>
+      <label class="slider-row">training speed
+        <input id="tspeed" type="range" min="1" max="10" value="5">
+      </label>
+      <div class="btn-row">
+        <button id="btn-sound" class="big">SOUND OFF</button>
+        <button id="btn-reset" class="big danger">RESET SQUAD</button>
+      </div>
+      <div class="note">by <a href="https://github.com/realgauravvyas" target="_blank" rel="noopener">@realgauravvyas</a> — trained flies come back after refresh</div>
+      <div id="save-note" class="note"></div>
+    </div>
+  </aside>
+</main>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
