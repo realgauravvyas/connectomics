@@ -4,4 +4,3 @@ npm-debug.log*
 Thumbs.db
 *.local
 data/connectome.json
-shot*.png
