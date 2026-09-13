@@ -23,6 +23,12 @@
 
 ---
 
+<p align="center">
+  <img src="assets/screenshot.png" alt="SYNAPTICA Dashboard — 3D Neuropil Connectome with 125M mapped synapses" width="820" />
+</p>
+
+---
+
 ## 🌟 Overview: The Connectome Alive
 
 **SYNAPTICA** turns the Google Research & HHMI Janelia male *Drosophila melanogaster* connectome (*Cell*, September 2026) into an interactive, playable 3D neuro-computational sandbox.
