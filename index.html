@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CONNECTOMICS · Complete Fruit Fly Brain Simulation Suite</title>
+  <meta name="description" content="In-silico simulation suite of the complete male Drosophila melanogaster central nervous system (166,700 neurons, 125M synapses). Powered by Google Research & HHMI Janelia connectomics datasets." />
+  <meta property="og:title" content="CONNECTOMICS · Complete Fruit Fly Brain Simulation Suite" />
+  <meta property="og:description" content="Explore 166,700 reconstructed neurons, Hebbian learning, forward spike propagation, reverse behavior search, and live in-silico electrophysiology." />
+  <meta property="og:type" content="website" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%2300e5ff'/><text x='50%25' y='65%25' text-anchor='middle' font-size='18' font-family='sans-serif' font-weight='900' fill='%23060910'>🪰</text></svg>" />
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <div class="container">
+    <!-- Header -->
+    <header class="site-header">
+      <div class="brand-group">
+        <div class="brand-icon">🪰</div>
+        <div class="brand-titles">
+          <h1>CONNECTOMICS</h1>
+          <span>In-Silico Drosophila Brain Suite</span>
+        </div>
+      </div>
+      <div class="header-links">
+        <a href="https://github.com/realgauravvyas/connectomics" class="badge-link" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          GitHub Repository
+        </a>
+        <a href="https://research.google/blog/a-connectomics-milestone-mapping-the-complete-male-fruit-fly-brain/" class="badge-link" target="_blank" rel="noopener">
+          Cell 2026 Milestone
+        </a>
+      </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="eyebrow">
+        <span class="dot"></span> Complete Male Connectome · 166,700 Neurons · 125M Synapses
+      </div>
+      <h2>
+        The Whole Fruit Fly Brain,<br>
+        <span>Running In-Silico in Your Browser.</span>
+      </h2>
+      <p class="lead">
+        A unified suite of client-side neuro-computational engines built from Google Research and HHMI Janelia's landmark connectomics milestone. Zero servers, zero build steps, and zero dependencies.
+      </p>
+
+      <div class="metrics-row">
+        <div class="metric-pill">
+          <b>166,700</b>
+          <span>Neurons Mapped</span>
+        </div>
+        <div class="metric-pill">
+          <b>124,000,000+</b>
+          <span>Synapses Traced</span>
+        </div>
+        <div class="metric-pill">
+          <b>11,779</b>
+          <span>Identified Cell Types</span>
+        </div>
+        <div class="metric-pill">
+          <b>60 FPS</b>
+          <span>Live WebGL Engine</span>
+        </div>
+        <div class="metric-pill">
+          <b>0 MB</b>
+          <span>Backend Overhead</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects Grid -->
+    <div class="section-title">
+      <div>
+        <h3>Interactive Connectome Simulators</h3>
+        <p>Explore different biological scales: from single-spike diffusion to whole-organism cybernetics.</p>
+      </div>
+    </div>
+
+    <section class="projects-grid">
+
+      <!-- Card 1: MUSCA -->
+      <article class="project-card">
+        <div class="card-top">
+          <span class="card-badge badge-musca">Full EM Reconstruction</span>
+        </div>
+        <h4 class="card-name">MUSCA</h4>
+        <p class="card-tagline">Complete 3D wiring diagram with forward spike propagation and reverse behavior-to-circuit graph search.</p>
+        
+        <ul class="card-features">
+          <li><strong>Atlas Mode:</strong> Search 11,779 cell types; color by transmitter, hemisphere, or sex dimorphism.</li>
+          <li><strong>Poke Mode:</strong> Forward decaying spike wave across the real 2.8M-edge matrix.</li>
+          <li><strong>Reverse Search:</strong> Work backwards from 9 verified behaviors to the exact sensory-motor circuits.</li>
+          <li><strong>Lesion Sandbox:</strong> Target and ablate individual neurons or pathways.</li>
+        </ul>
+
+        <div class="card-stats">
+          <div><span class="v">166,700</span><span class="l">Neurons</span></div>
+          <div><span class="v">2.82M</span><span class="l">Edges</span></div>
+          <div><span class="v">1.1M</span><span class="l">Synapse Points</span></div>
+        </div>
+
+        <a href="musca/" class="btn-launch btn-cyan">Launch MUSCA Connectome →</a>
+      </article>
+
+      <!-- Card 2: 166k -->
+      <article class="project-card">
+        <div class="card-top">
+          <span class="card-badge badge-166k">Spiking Neural Dynamics</span>
+        </div>
+        <h4 class="card-name">166k</h4>
+        <p class="card-tagline">Live-grown procedural LIF spiking neural network running with axonal delays and Hebbian aversive conditioning.</p>
+        
+        <ul class="card-features">
+          <li><strong>LIF Electrophysiology:</strong> Real-time leaky integrate-and-fire simulation with 4:1 E/I balance.</li>
+          <li><strong>Sensory-Motor Cascades:</strong> Odor delivery triggering Antennal Lobe → Mushroom Body → Lateral Horn.</li>
+          <li><strong>Aversive Conditioning:</strong> Pair odor with PPL1 dopamine shock to shift behavioral valence.</li>
+          <li><strong>Ablation Proof:</strong> Silencing Mushroom Body completely blocks synaptic plasticity.</li>
+        </ul>
+
+        <div class="card-stats">
+          <div><span class="v">166,000</span><span class="l">Neurons</span></div>
+          <div><span class="v">2.30M</span><span class="l">Synapses</span></div>
+          <div><span class="v">60 FPS</span><span class="l">WebGL Blended</span></div>
+        </div>
+
+        <a href="166k/" class="btn-launch btn-emerald">Launch 166k Spiking Engine →</a>
+      </article>
+
+      <!-- Card 3: SYNAPTICA -->
+      <article class="project-card">
+        <div class="card-top">
+          <span class="card-badge badge-synaptica">3D Neuropil Circuit</span>
+        </div>
+        <h4 class="card-name">SYNAPTICA</h4>
+        <p class="card-tagline">Playable 3D neuropil circuit with visual/olfactory pathways and interactive Mushroom Body memory training.</p>
+        
+        <ul class="card-features">
+          <li><strong>Neuropil Topology:</strong> Optic Lobes, Antennal Lobes, Mushroom Body, Central Complex, VNC.</li>
+          <li><strong>Sensory Injection:</strong> Flash Eyes (visual-motor cascade) & Puff Odor (olfactory cascade).</li>
+          <li><strong>Train Memory:</strong> Repeated cue firing strengthens Kenyon Cell → MBON connections in real time.</li>
+          <li><strong>Ambient Mode:</strong> Autonomous living neural activity display for cinematic visualization.</li>
+        </ul>
+
+        <div class="card-stats">
+          <div><span class="v">12</span><span class="l">Neuropils</span></div>
+          <div><span class="v">Live HUD</span><span class="l">Synapse Counter</span></div>
+          <div><span class="v">Hebbian</span><span class="l">Memory Gauge</span></div>
+        </div>
+
+        <a href="synaptica/" class="btn-launch btn-pink">Launch SYNAPTICA →</a>
+      </article>
+
+      <!-- Card 4: DROSOMIND -->
+      <article class="project-card">
+        <div class="card-top">
+          <span class="card-badge badge-drosomind">Cybernetic Organism</span>
+        </div>
+        <h4 class="card-name">DROSOMIND</h4>
+        <p class="card-tagline">Closed-loop in-silico male fruit fly with physically articulated 3D anatomy and bio-acoustic courtship song synthesizer.</p>
+        
+        <ul class="card-features">
+          <li><strong>Dual Split-View:</strong> 3D Connectome Holo-Deck paired with an articulated male Drosophila model.</li>
+          <li><strong>Courtship Acoustics:</strong> Web Audio synthesizer producing species-specific Pulse & Sine song.</li>
+          <li><strong>Ring Attractor Compass:</strong> 16-wedge Ellipsoid Body maintaining dynamic spatial heading.</li>
+          <li><strong>Sexual Dimorphism:</strong> P1 courtship hub inspection comparing male vs female connectomes.</li>
+        </ul>
+
+        <div class="card-stats">
+          <div><span class="v">Dual-View</span><span class="l">Brain + Body</span></div>
+          <div><span class="v">Web Audio</span><span class="l">Bio-Acoustic</span></div>
+          <div><span class="v">P1 Hub</span><span class="l">Fru+/Dsx+</span></div>
+        </div>
+
+        <a href="https://realgauravvyas.github.io/drosomind/" target="_blank" rel="noopener" class="btn-launch btn-amber">Launch DROSOMIND Portal ↗</a>
+      </article>
+
+    </section>
+
+    <!-- Architecture & Science Breakdown -->
+    <section class="info-panel">
+      <h3>The Connectome Architecture</h3>
+      <p>
+        The complete central nervous system of <i>Drosophila melanogaster</i> comprises the central brain (processing vision, olfaction, navigation, and associative memory) connected to the ventral nerve cord (VNC) via descending neurons (DNs). Each simulator in this suite demonstrates how micro-scale synaptic connectivity translates directly into macro-scale behavioral output.
+      </p>
+
+      <div class="diagram-box">
+  [ SENSORY PERCEPTION ]
+    • Photons & Optical Flow   ──►  Optic Lobes (Lamina → Medulla → Lobula → LPTCs)
+    • Odorants & Pheromones    ──►  Antennal Lobes (Glomeruli) → Mushroom Body (Kenyon Cells)
+    • Acoustic Vibrations      ──►  Johnston's Organ (JO-A1) → Antennal Mechanosensory Center (AMMC)
+             │
+             ▼
+  [ CENTRAL INTEGRATION & MEMORY ]
+    • Heading Navigation       ──►  Central Complex (Ellipsoid Body Ring Attractor)
+    • Associative Learning     ──►  Mushroom Body Output Neurons (MBONs) + Dopamine (PPL1 / PAM)
+    • Courtship & Mate Choice  ──►  P1 Courtship Hub (Male-Specific Fru+/Dsx+ Clusters)
+             │
+             ▼
+  [ MOTOR COMMAND (DESCENDING PATHWAYS) ]
+    • Giant Fiber Takeoff      ──►  DNp01 (Escape Jump Command)
+    • Courtship Sing Back      ──►  DNp02 (Unilateral Wing Extension)
+    • Steering Modulation      ──►  DNp31 (Flight Motor Coordination)
+             │
+             ▼
+  [ VENTRAL NERVE CORD & EFFECTORS ]
+    • T1 Neuromeres            ──►  Forelegs (Grooming & Substrate Sensing)
+    • T2 Neuromeres            ──►  Flight & Wing Vibration (Pulse & Sine Song)
+    • T3 Neuromeres            ──►  Tergal Trochanter Jump Muscles (TTMn)
+      </div>
+
+      <div class="citation-card">
+        <b>Scientific Citation:</b><br>
+        Google Research, Howard Hughes Medical Institute (HHMI Janelia), and the FlyEM Consortium.<br>
+        <i>"Sexual dimorphism in the complete connectome of the Drosophila male central nervous system"</i>, <b>Cell</b> (September 2026).<br>
+        Read the official announcement: <a href="https://research.google/blog/a-connectomics-milestone-mapping-the-complete-male-fruit-fly-brain/" target="_blank" rel="noopener">Google Research Connectomics Milestone</a>
+      </div>
+    </section>
+
+    <!-- Author Section -->
+    <section class="author-box">
+      <div class="author-info">
+        <h4>Created & Maintained by Gaurav Vyas</h4>
+        <p>Independent neuro-computational models and browser-native scientific simulators.</p>
+      </div>
+      <div class="author-links">
+        <a href="https://realgauravvyas.github.io/" class="badge-link" target="_blank" rel="noopener">Portfolio</a>
+        <a href="https://github.com/realgauravvyas" class="badge-link" target="_blank" rel="noopener">GitHub (@realgauravvyas)</a>
+        <a href="https://www.socialpsychology.org/member/gaurav-vyas" class="badge-link" target="_blank" rel="noopener">Academic Profile</a>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <p>CONNECTOMICS Suite &copy; 2026 Gaurav Vyas. Open-source science under the MIT License.</p>
+    </footer>
+  </div>
+
+</body>
+</html>

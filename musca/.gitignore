@@ -1,0 +1,13 @@
+# build artefacts — the raw MaleCNS tables are several GB
+data-raw/
+
+# local screenshot / test output
+_shots/
+_site/
+
+node_modules/
+.DS_Store
+Thumbs.db
+*.log
+.venv/
+__pycache__/

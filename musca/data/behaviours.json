@@ -1,0 +1,219 @@
+[
+ {
+  "id": "escape-jump",
+  "name": "Escape jump",
+  "blurb": "A looming shadow triggers the giant-fibre escape circuit.",
+  "sources": [
+   "LPLC2"
+  ],
+  "targets": [
+   "TTMn"
+  ],
+  "chain": [
+   "LPLC2",
+   "DNp01",
+   "TTMn"
+  ],
+  "neurons": [
+   9253,
+   0,
+   144432
+  ]
+ },
+ {
+  "id": "sing-back",
+  "name": "Sing back",
+  "blurb": "Hear a courtship song, answer with one.",
+  "sources": [
+   "JO-A1"
+  ],
+  "targets": [
+   "DLMn a, b"
+  ],
+  "chain": [
+   "JO-A1",
+   "SAD103",
+   "DNp02",
+   "AN19B001",
+   "DLMn a, b"
+  ],
+  "neurons": [
+   22727,
+   114,
+   178,
+   24124,
+   145286
+  ]
+ },
+ {
+  "id": "follow-an-odour",
+  "name": "Follow an odour",
+  "blurb": "Smell food, walk towards it.",
+  "sources": [
+   "ORN_DA1"
+  ],
+  "targets": [
+   "ltm1-tibia MN"
+  ],
+  "chain": [
+   "ORN_DA1",
+   "AL-AST1",
+   "DNge054",
+   "DNg100",
+   "IN09A002",
+   "ltm1-tibia MN"
+  ],
+  "neurons": [
+   114196,
+   425,
+   349,
+   46,
+   144637,
+   163714
+  ]
+ },
+ {
+  "id": "see-a-shadow",
+  "name": "See a shadow",
+  "blurb": "Photoreceptors to the giant fibre.",
+  "sources": [
+   "R1-R6"
+  ],
+  "targets": [
+   "DNp01"
+  ],
+  "chain": [
+   "R1-R6",
+   "L2",
+   "Tm2",
+   "LC4",
+   "DNp01"
+  ],
+  "neurons": [
+   108169,
+   138624,
+   49014,
+   129563,
+   6
+  ]
+ },
+ {
+  "id": "steer-a-turn",
+  "name": "Steer a turn",
+  "blurb": "Horizontal motion to the steering muscles.",
+  "sources": [
+   "T4c"
+  ],
+  "targets": [
+   "DLMn c-f"
+  ],
+  "chain": [
+   "T4c",
+   "vCal3",
+   "DNp31",
+   "DLMn c-f"
+  ],
+  "neurons": [
+   92903,
+   996,
+   228,
+   145817
+  ]
+ },
+ {
+  "id": "startle-to-sound",
+  "name": "Startle to sound",
+  "blurb": "A sound, and the fly jumps.",
+  "sources": [
+   "JO-A1"
+  ],
+  "targets": [
+   "TTMn"
+  ],
+  "chain": [
+   "JO-A1",
+   "SAD109",
+   "DNp01",
+   "TTMn"
+  ],
+  "neurons": [
+   164455,
+   1295,
+   0,
+   144432
+  ]
+ },
+ {
+  "id": "walk-to-a-smell",
+  "name": "Walk to a smell",
+  "blurb": "Odour to the descending neurons that drive walking.",
+  "sources": [
+   "ORN_DC2"
+  ],
+  "targets": [
+   "DNg01_a"
+  ],
+  "chain": [
+   "ORN_DC2",
+   "il3LN6",
+   "M_l2PNl20",
+   "SIP022",
+   "AOTU019",
+   "PS232",
+   "DNg01_a"
+  ],
+  "neurons": [
+   121809,
+   437,
+   653,
+   113858,
+   57,
+   2647,
+   16761
+  ]
+ },
+ {
+  "id": "taste-and-reach",
+  "name": "Taste and reach",
+  "blurb": "Taste a sugar, extend the proboscis.",
+  "sources": [
+   "BM_Taste"
+  ],
+  "targets": [
+   "MN9"
+  ],
+  "chain": [
+   "BM_Taste",
+   "GNG015",
+   "MN9"
+  ],
+  "neurons": [
+   24145,
+   131870,
+   306
+  ]
+ },
+ {
+  "id": "remember-an-odour",
+  "name": "Remember an odour",
+  "blurb": "Smell to the mushroom body's output \u2014 where a fly learns.",
+  "sources": [
+   "ORN_DA1"
+  ],
+  "targets": [
+   "MBON01"
+  ],
+  "chain": [
+   "ORN_DA1",
+   "DA1_lPN",
+   "APL",
+   "MBON01"
+  ],
+  "neurons": [
+   107538,
+   1866,
+   502,
+   9
+  ]
+ }
+]

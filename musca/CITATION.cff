@@ -1,0 +1,37 @@
+cff-version: 1.2.0
+message: "If you use MUSCA, please cite it and the underlying MaleCNS dataset."
+title: "MUSCA — an interactive map of the complete male fruit fly central nervous system"
+abstract: >-
+  A dependency-free browser application that renders all 166,700 neurons and
+  2.8 million pruned synaptic connections of the MaleCNS v1.0 connectome, and
+  lets you propagate activity forward across real synapses or search the
+  wiring diagram backwards from a behaviour to the cells that cause it.
+version: 1.0.0
+date-released: 2026-09-13
+license: MIT
+type: software
+keywords:
+  - connectomics
+  - Drosophila
+  - neuroscience
+  - WebGL
+  - data visualisation
+references:
+  - type: article
+    title: "Sexual dimorphism in the complete connectome of the Drosophila male central nervous system"
+    journal: Cell
+    year: 2026
+    doi: 10.1016/j.cell.2026.08.015
+    authors:
+      - family-names: Dorkenwald
+        given-names: Sven
+      - family-names: Matsliah
+        given-names: Arie
+      - family-names: Sterling
+        given-names: Amy R.
+  - type: dataset
+    title: "MaleCNS v1.0 connectome (male-cns:v1.0)"
+    publisher: Janelia FlyEM, HHMI Janelia Research Campus
+    year: 2026
+    url: https://male-cns.janelia.org/
+    license: CC-BY-4.0

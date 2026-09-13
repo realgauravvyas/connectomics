@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>166k — a fruit fly brain, running in your browser</title>
+<style>
+  :root{
+    --bg:#05060a; --panel:#0c0f18; --panel2:#111621; --line:#1e2536;
+    --txt:#c9d3e6; --dim:#6b7893; --hi:#e8eefc;
+    --accent:#5cb8ff; --warn:#ff6b8c; --good:#8cff73; --amber:#ffc747;
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;background:var(--bg);color:var(--txt);
+    font:13px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;overflow:hidden}
+  #gl{position:fixed;inset:0;width:100%;height:100%;display:block;cursor:grab;touch-action:none}
+  #gl:active{cursor:grabbing}
+
+  /* ---------------------------------------------------------- overlay */
+  #overlay{position:fixed;inset:0;z-index:50;background:radial-gradient(60% 60% at 50% 45%,#0b1020,#04050a 70%);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
+    transition:opacity .6s ease}
+  #overlay.gone{opacity:0;pointer-events:none}
+  #overlay h1{margin:0;font:600 30px/1 var(--mono);letter-spacing:.14em;color:var(--hi)}
+  #overlay .sub{color:var(--dim);font-size:12px;letter-spacing:.05em}
+  #overlay-track{width:240px;height:2px;background:#1a2133;overflow:hidden;border-radius:2px}
+  #overlay-bar{height:100%;width:5%;background:var(--accent);transition:width .3s ease}
+  #overlay-status{font:11px var(--mono);color:var(--dim);min-height:16px}
+  #overlay-status .err{color:var(--warn)}
+
+  /* ------------------------------------------------------------ layout */
+  #hud{position:fixed;top:0;left:0;right:0;padding:10px 12px;display:flex;
+    gap:10px;align-items:flex-start;pointer-events:none;z-index:10}
+  #hud > *{pointer-events:auto}
+
+  .card{background:rgba(12,15,24,.82);border:1px solid var(--line);border-radius:10px;
+    backdrop-filter:blur(9px);padding:10px 12px}
+
+  #title{min-width:200px}
+  #title h1{margin:0 0 2px;font:600 15px/1 var(--mono);letter-spacing:.12em;color:var(--hi)}
+  #title .sub{color:var(--dim);font-size:10.5px;letter-spacing:.04em}
+
+  #stats{display:grid;grid-template-columns:repeat(5,auto);gap:2px 14px;font:11px var(--mono)}
+  #stats .k{color:var(--dim)}
+  #stats .val{color:var(--hi);text-align:right}
+  #stats .val.warn{color:var(--warn)}
+  #stats .val.good{color:var(--good)}
+
+  /* ------------------------------------------------------------ panels */
+  #side{position:fixed;top:64px;right:12px;bottom:12px;width:290px;display:flex;
+    flex-direction:column;gap:8px;z-index:10;overflow:hidden}
+  #tabs{display:flex;gap:4px}
+  .tab{flex:1;background:rgba(12,15,24,.82);border:1px solid var(--line);color:var(--dim);
+    padding:6px 4px;border-radius:8px;cursor:pointer;font:11px var(--mono);letter-spacing:.05em}
+  .tab.on{color:var(--hi);border-color:#2c3a55;background:rgba(30,40,60,.9)}
+  .pane{display:none;overflow-y:auto;flex:1;background:rgba(12,15,24,.82);
+    border:1px solid var(--line);border-radius:10px;padding:10px;backdrop-filter:blur(9px)}
+  .pane.on{display:block}
+  .pane::-webkit-scrollbar{width:7px}
+  .pane::-webkit-scrollbar-thumb{background:#212a3d;border-radius:4px}
+
+  h3{margin:2px 0 7px;font:600 10px/1 var(--mono);letter-spacing:.14em;
+    text-transform:uppercase;color:var(--dim)}
+  h3:not(:first-child){margin-top:14px}
+
+  /* sliders */
+  .sl{margin-bottom:9px}
+  .sl-l{display:flex;justify-content:space-between;font:10.5px var(--mono);color:var(--dim);margin-bottom:3px}
+  .sl-l b{color:var(--txt);font-weight:400}
+  input[type=range]{width:100%;height:3px;-webkit-appearance:none;appearance:none;
+    background:#222c40;border-radius:2px;outline:none}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;
+    border-radius:50%;background:var(--accent);cursor:pointer;border:2px solid #0c0f18}
+  input[type=range]::-moz-range-thumb{width:12px;height:12px;border-radius:50%;
+    background:var(--accent);cursor:pointer;border:2px solid #0c0f18}
+
+  .chk{display:flex;align-items:center;gap:7px;margin-bottom:7px;font-size:11.5px;color:var(--dim);cursor:pointer}
+  .chk input{accent-color:var(--accent);cursor:pointer}
+
+  /* buttons */
+  .btn{width:100%;background:#141b29;border:1px solid var(--line);color:var(--txt);
+    padding:7px;border-radius:7px;cursor:pointer;font-size:11.5px;margin-bottom:5px;
+    transition:background .12s,border-color .12s}
+  .btn:hover{background:#1b2436;border-color:#33415e}
+  .btn.primary{background:#17304a;border-color:#2b4f74;color:#cfe6ff}
+  .btn.primary:hover{background:#1d3c5c}
+  .btn.danger{border-color:#4a2430;color:#ffb3c1}
+  .btn.danger:hover{background:#2a1620}
+
+  #stim-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+  .stim{background:#141b29;border:1px solid var(--line);color:var(--txt);padding:6px 4px;
+    border-radius:7px;cursor:pointer;font-size:11px;transition:background .1s,transform .1s}
+  .stim:hover{background:#1b2436}
+  .stim.hot{background:var(--accent);color:#04121e;transform:scale(.97);border-color:var(--accent)}
+  .stim.k-teach{border-color:#3b4a2a;color:#cfe8b8}
+  .stim.k-teach.hot{background:var(--good);color:#0a1a05}
+  .stim.k-scent{border-color:#3d3520}
+  .stim.k-taste{border-color:#3a2d3f}
+  .stim.k-vision{border-color:#1f3846}
+  .stim.k-mech{border-color:#2c3348}
+  .hint{color:var(--dim);font-size:10.5px;margin:-2px 0 8px;line-height:1.4}
+
+  .readout{font:10.5px var(--mono);color:var(--dim);background:#0a0e17;
+    border:1px solid var(--line);border-radius:6px;padding:5px 7px;margin:2px 0 8px;
+    min-height:22px}
+  .readout b{font-weight:400;color:var(--hi)}
+  .readout .neg{color:var(--warn)}
+  .readout .pos{color:var(--good)}
+
+  /* behaviour bars */
+  .bb{display:flex;align-items:center;gap:7px;margin-bottom:5px;font:10.5px var(--mono)}
+  .bb span{width:52px;color:var(--dim)}
+  .bb .track{flex:1;height:4px;background:#1a2133;border-radius:2px;overflow:hidden}
+  .bb i{display:block;height:100%;background:var(--accent);transition:width .1s linear}
+  #behave-note{color:var(--dim);font-size:10.5px;margin-top:4px;min-height:14px}
+  #behave-note b{color:var(--txt);font-weight:400}
+
+  /* valence */
+  #valence{display:flex;height:16px;border-radius:4px;overflow:hidden;background:#1a2133;margin-bottom:4px}
+  #valence-ap{background:var(--amber);transition:width .15s}
+  #valence-av{background:var(--warn);margin-left:auto;transition:width .15s}
+  #valence-label{font:10.5px var(--mono);color:var(--dim);text-align:center}
+
+  #trace{width:100%;height:56px;display:block;margin-top:6px;
+    background:#0a0e17;border:1px solid var(--line);border-radius:6px}
+  .legend{display:flex;gap:10px;font:9.5px var(--mono);color:var(--dim);margin-top:4px}
+  .legend i{display:inline-block;width:7px;height:7px;border-radius:2px;margin-right:3px}
+
+  /* region rates */
+  .rr{display:flex;align-items:center;gap:6px;font:10px var(--mono);padding:1.5px 3px;
+    border-radius:4px;cursor:pointer}
+  .rr:hover{background:#151c2b}
+  .rr.on{background:#172033}
+  .rr-name{width:52px;color:var(--dim)}
+  .rr.on .rr-name{color:var(--hi)}
+  .rr-bar{flex:1;height:4px;background:#1a2133;border-radius:2px;overflow:hidden}
+  .rr-bar i{display:block;height:100%;width:0;transition:width .1s linear}
+  .rr-val{width:30px;text-align:right;color:var(--dim)}
+  .rr-x{background:none;border:none;color:#2f3a52;cursor:pointer;padding:0 0 0 2px;
+    font-size:11px;line-height:1}
+  .rr-x:hover{color:var(--warn)}
+  .rr.lesioned .rr-name{text-decoration:line-through;opacity:.5}
+  .rr.lesioned .rr-x{color:var(--warn)}
+
+  #hover-tip{position:fixed;z-index:20;pointer-events:none;display:none;
+    background:rgba(8,11,18,.92);border:1px solid var(--line);border-radius:6px;
+    padding:3px 7px;font:10.5px var(--mono);color:var(--txt);
+    transform:translate(12px,12px);white-space:nowrap}
+  #hover-tip.on{display:block}
+  #hover-tip .les{color:var(--warn)}
+
+  /* neuron card */
+  #neuron{position:fixed;left:12px;bottom:12px;width:236px;z-index:11;display:none}
+  #neuron.on{display:block}
+  #neuron .nid{font:600 11px var(--mono);color:var(--hi);margin-bottom:6px;letter-spacing:.04em}
+  .nrow{display:flex;justify-content:space-between;font:10.5px var(--mono);padding:1.5px 0}
+  .nrow span{color:var(--dim)}
+  .nrow b{font-weight:400;color:var(--txt)}
+  #neuron button{width:100%;margin-top:6px;background:#141b29;border:1px solid var(--line);
+    color:var(--txt);padding:5px;border-radius:6px;cursor:pointer;font-size:10.5px}
+  #neuron button:hover{background:#1b2436}
+
+  /* log */
+  #logbox{position:fixed;left:12px;top:64px;width:236px;max-height:170px;z-index:9;
+    display:flex;flex-direction:column}
+  #log{overflow-y:auto;font:10.5px var(--mono);color:var(--dim);line-height:1.5}
+  #log div{padding:.5px 0}
+  #log .lt{color:#3d4a63;margin-right:5px}
+  #log::-webkit-scrollbar{width:6px}
+  #log::-webkit-scrollbar-thumb{background:#212a3d;border-radius:3px}
+  #clear-log{background:none;border:none;color:#3d4a63;font:9.5px var(--mono);
+    cursor:pointer;padding:0 0 3px;text-align:left}
+  #clear-log:hover{color:var(--dim)}
+
+  #meta-scale{font:9.5px var(--mono);color:#3d4a63;margin-top:3px}
+
+  @media (max-width:900px){
+    #side{top:auto;bottom:8px;right:8px;left:8px;width:auto;height:44vh}
+    #logbox,#neuron{display:none}
+    #stats{grid-template-columns:repeat(3,auto)}
+  }
+</style>
+</head>
+<body>
+<canvas id="gl"></canvas>
+
+<div id="overlay">
+  <h1>166k</h1>
+  <div class="sub">a male Drosophila central nervous system, simulated</div>
+  <div id="overlay-track"><div id="overlay-bar"></div></div>
+  <div id="overlay-status">starting…</div>
+</div>
+
+<div id="hud">
+  <a href="../" style="text-decoration:none;pointer-events:auto" title="Back to Connectomics Suite Hub"><div class="card" style="display:flex;align-items:center;gap:6px;color:var(--accent);font:600 11px var(--mono);padding:8px 12px;border-color:rgba(92,184,255,0.3);background:rgba(92,184,255,0.08);cursor:pointer"><span>←</span><span>HUB</span></div></a>
+  <div class="card" id="title">
+    <h1>166k</h1>
+    <div class="sub">Drosophila CNS · live</div>
+    <div id="meta-scale"></div>
+  </div>
+  <div class="card">
+    <div id="stats">
+      <div class="k">fps</div><div class="val" id="stat-fps">–</div>
+      <div class="k">mean Hz</div><div class="val" id="stat-hz">–</div>
+      <div class="k">spikes</div><div class="val" id="stat-spikes">–</div>
+      <div class="k">dopamine</div><div class="val" id="stat-da">–</div>
+      <div class="k">sim time</div><div class="val" id="stat-t">–</div>
+    </div>
+  </div>
+</div>
+
+<div class="card" id="logbox">
+  <button id="clear-log">clear</button>
+  <div id="log"></div>
+</div>
+
+<div id="side">
+  <div id="tabs">
+    <button class="tab on" data-pane="pane-behav">behaviour</button>
+    <button class="tab" data-pane="pane-stim">stimuli</button>
+    <button class="tab" data-pane="pane-train">train</button>
+    <button class="tab" data-pane="pane-net">network</button>
+  </div>
+
+  <div class="pane on" id="pane-behav">
+    <h3>behaviour</h3>
+    <div class="bb"><span>walk</span><div class="track"><i id="bar-walk"></i></div></div>
+    <div class="bb"><span>turn</span><div class="track"><i id="bar-turn"></i></div></div>
+    <div class="bb"><span>wing</span><div class="track"><i id="bar-wing"></i></div></div>
+    <div class="bb"><span>proboscis</span><div class="track"><i id="bar-prob"></i></div></div>
+    <div class="bb"><span>song</span><div class="track"><i id="bar-song"></i></div></div>
+    <div id="behave-note">
+      <b id="walk-state">standing</b> · turn <b id="turn-dir">—</b> ·
+      wings <b id="wing-state">folded</b> <b id="jump-state"></b>
+    </div>
+
+    <h3>valence</h3>
+    <div id="valence"><div id="valence-ap"></div><div id="valence-av"></div></div>
+    <div id="valence-label">undecided</div>
+    <canvas id="trace"></canvas>
+    <div class="legend">
+      <span><i style="background:#ffc747"></i>approach</span>
+      <span><i style="background:#ff6b8c"></i>avoid</span>
+      <span><i style="background:#8cff73"></i>dopamine</span>
+    </div>
+  </div>
+
+  <div class="pane" id="pane-stim">
+    <h3>stimulate</h3>
+    <div class="hint">Click to deliver 400 ms. Press and hold for a sustained drive.</div>
+    <div id="stim-grid"></div>
+    <h3>view</h3>
+    <div class="sl"><div class="sl-l"><span>point size</span><b id="size-v"></b></div>
+      <input type="range" id="size" min="0.4" max="3" step="0.05" value="1"></div>
+    <div class="sl"><div class="sl-l"><span>exposure</span><b id="exposure-v"></b></div>
+      <input type="range" id="exposure" min="0.4" max="2.5" step="0.05" value="1"></div>
+    <div class="sl"><div class="sl-l"><span>axon opacity</span><b id="wires-v"></b></div>
+      <input type="range" id="wires" min="0" max="2" step="0.05" value="1"></div>
+    <label class="chk"><input type="checkbox" id="spin" checked> auto-rotate</label>
+    <label class="chk"><input type="checkbox" id="showwires" checked> show firing synapses</label>
+    <div class="hint">Drag to orbit · scroll to zoom · click a neuron to inspect it.</div>
+    <button class="btn" id="play">❚❚ pause</button>
+  </div>
+
+  <div class="pane" id="pane-train">
+    <h3>conditioning</h3>
+    <div class="hint">Pair odour A with a teaching signal. Dopamine from PPL1
+      (shock) or PAM (sugar) rewrites the Kenyon cell → MBON synapses.</div>
+    <button class="btn primary" id="train-aversive">aversive ×3 &nbsp;(A + shock)</button>
+    <button class="btn primary" id="train-appetitive">appetitive ×3 &nbsp;(A + sugar)</button>
+    <button class="btn" id="probe">probe: odour A alone</button>
+    <button class="btn" id="measure">measure memory</button>
+    <div class="readout" id="memory-readout">no measurement yet</div>
+    <button class="btn danger" id="forget">reset synapses to naive</button>
+    <div class="readout" id="plast-readout">—</div>
+    <h3>plasticity</h3>
+    <div class="sl"><div class="sl-l"><span>learning rate</span><b id="lr-v"></b></div>
+      <input type="range" id="lr" min="0" max="0.02" step="0.0005" value="0.003"></div>
+    <label class="chk"><input type="checkbox" id="plastic" checked> synapses can change</label>
+    <h3>arousal</h3>
+    <div class="sl"><div class="sl-l"><span>synaptic gain</span><b id="arousal-v"></b></div>
+      <input type="range" id="arousal" min="0.14" max="0.28" step="0.005" value="0.25"></div>
+    <div class="sl"><div class="sl-l"><span>inhibition</span><b id="inhib-v"></b></div>
+      <input type="range" id="inhib" min="0.6" max="2.6" step="0.05" value="1.55"></div>
+    <div class="sl"><div class="sl-l"><span>sim speed</span><b id="speed-v"></b></div>
+      <input type="range" id="speed" min="0.1" max="2" step="0.1" value="1"></div>
+    <button class="btn danger" id="reset">reset membrane potentials</button>
+  </div>
+
+  <div class="pane" id="pane-net">
+    <h3>region firing rates (Hz)</h3>
+    <div class="hint">Click a region to isolate it. <b>◌</b> lesions it —
+      its outgoing synapses are silenced and it goes grey, but the neurons
+      still spike. Lesion the mushroom body, then try to train the fly.</div>
+    <div id="region-rates"></div>
+    <button class="btn" id="restore-all">restore all regions</button>
+  </div>
+</div>
+
+<div class="card" id="neuron"></div>
+<div id="hover-tip"></div>
+
+<script type="module" src="./js/main.js"></script>
+</body>
+</html>

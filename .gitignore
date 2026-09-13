@@ -1,0 +1,20 @@
+# Large raw source tables (several GB, safely excluded)
+**/data-raw/
+data-raw/
+
+# Temporary and local test outputs
+**/_shots/
+**/_site/
+_shots/
+_site/
+
+# Node & Python caches
+node_modules/
+__pycache__/
+*.pyc
+*.log
+.venv/
+
+# OS metadata
+.DS_Store
+Thumbs.db

@@ -1,0 +1,17 @@
+{
+  "name": "166k",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "A living model of the male fruit fly CNS: 166,000 neurons, simulated in the browser.",
+  "scripts": {
+    "serve": "node tools/serve.mjs",
+    "analyze": "node tools/analyze.mjs",
+    "tune": "node tools/tune.mjs",
+    "bench": "node tools/bench.mjs",
+    "smoke": "node tools/smoke.mjs",
+    "check": "node tools/analyze.mjs && node tools/smoke.mjs"
+  },
+  "keywords": ["connectome", "drosophila", "neuroscience", "simulation", "webgl"],
+  "license": "MIT"
+}

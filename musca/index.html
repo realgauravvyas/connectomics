@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<title>MUSCA — Reverse-Engineering the Fruit Fly Brain</title>
+<meta name="description" content="An interactive map of the complete male fruit fly central nervous system: 166,700 neurons and 124 million synapses, running live in your browser. Poke a neuron and watch the signal spread — or name a behaviour and watch the brain work backwards to the cells that cause it." />
+<meta name="theme-color" content="#04070d" />
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content="MUSCA — Reverse-Engineering the Fruit Fly Brain" />
+<meta property="og:description" content="166,700 neurons. 124 million synapses. One browser tab. Poke a neuron, or name a behaviour and let the connectome work backwards." />
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='34' fill='none' stroke='%2338e8ff' stroke-width='7'/><circle cx='50' cy='50' r='9' fill='%23ff4fd8'/></svg>" />
+<link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+
+<div id="boot">
+  <div class="boot-inner">
+    <div class="boot-mark">
+      <svg viewBox="0 0 120 120" width="76" height="76" aria-hidden="true">
+        <circle cx="60" cy="60" r="42" fill="none" stroke="#1d3550" stroke-width="1"/>
+        <circle cx="60" cy="60" r="28" fill="none" stroke="#1d3550" stroke-width="1"/>
+        <circle cx="60" cy="60" r="14" fill="none" stroke="#1d3550" stroke-width="1"/>
+        <circle cx="60" cy="60" r="5" fill="#38e8ff"/>
+      </svg>
+    </div>
+    <h1>MUSCA</h1>
+    <p class="boot-sub">male <i>Drosophila</i> central nervous system · v1.0</p>
+    <div class="boot-bar"><i id="bootFill"></i></div>
+    <p class="boot-msg" id="bootMsg">waking up…</p>
+  </div>
+</div>
+
+<div id="app" hidden>
+
+  <header id="topbar">
+    <div class="brand">
+      <a href="../" style="display:inline-flex;align-items:center;gap:4px;text-decoration:none;color:#38e8ff;font-size:11px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;margin-right:12px;padding:3px 8px;background:rgba(56,232,255,0.08);border:1px solid rgba(56,232,255,0.25);border-radius:6px;transition:all .2s">← HUB</a>
+      <span class="brand-dot"></span>
+      <b>MUSCA</b>
+      <span class="brand-tag">complete male fly CNS</span>
+    </div>
+
+    <div class="search-wrap">
+      <input id="search" type="search" autocomplete="off" spellcheck="false"
+             placeholder="search 11,779 cell types — try  DNp01, Kenyon, T4c, LPLC2…" />
+      <div id="searchResults" class="search-results" hidden></div>
+    </div>
+
+    <nav class="topnav">
+      <button id="btnTour" class="ghost" title="Auto-play a guided tour">▶ tour</button>
+      <button id="btnAbout" class="ghost" title="About the data">?</button>
+    </nav>
+  </header>
+
+  <aside id="left">
+    <section class="panel">
+      <h2>Mode</h2>
+      <div class="modes">
+        <button class="mode is-on" data-mode="atlas">
+          <b>Atlas</b><span>Explore the wiring diagram</span>
+        </button>
+        <button class="mode" data-mode="poke">
+          <b>Poke</b><span>Stimulate one neuron, watch it spread</span>
+        </button>
+        <button class="mode" data-mode="reverse">
+          <b>Reverse</b><span>Name a behaviour → find the neurons</span>
+        </button>
+        <button class="mode" data-mode="lesion">
+          <b>Lesion</b><span>Cut cells, measure the damage</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Layers</h2>
+      <label class="chk"><input type="checkbox" id="lySoma" checked><span>Neurons <em id="nSoma"></em></span></label>
+      <label class="chk"><input type="checkbox" id="lySyn" checked><span>Synapses <em id="nSyn"></em></span></label>
+      <label class="chk"><input type="checkbox" id="lyEdges"><span>Active wiring</span></label>
+      <label class="chk"><input type="checkbox" id="lySpin" checked><span>Auto-rotate</span></label>
+    </section>
+
+    <section class="panel">
+      <h2>Colour by</h2>
+      <div class="seg" id="colourBy">
+        <button data-c="superclass" class="is-on">Cell class</button>
+        <button data-c="nt">Transmitter</button>
+        <button data-c="side">Side</button>
+        <button data-c="dimorphism">Sex-difference</button>
+      </div>
+      <div id="legend" class="legend"></div>
+    </section>
+  </aside>
+
+  <aside id="right">
+    <section class="panel" id="inspector">
+      <h2 id="inspTitle">Inspector</h2>
+      <div id="inspBody" class="insp-empty">
+        <p>Click any neuron in the cloud.</p>
+        <p class="dim">Or press <kbd>Poke</kbd> and hit <b>Ping</b> for a random spark.</p>
+      </div>
+    </section>
+
+    <section class="panel" id="actionPanel">
+      <h2>Action</h2>
+      <div id="actionBody"></div>
+    </section>
+  </aside>
+
+  <div id="hud">
+    <div class="hud-stats" id="hudStats"></div>
+    <canvas id="timeline" height="46"></canvas>
+    <div class="hud-hint" id="hudHint">drag to orbit · scroll to zoom · click a neuron</div>
+  </div>
+
+  <div id="tooltip" hidden></div>
+
+  <div id="about" class="modal" hidden>
+    <div class="modal-card">
+      <button class="modal-x" id="aboutX">×</button>
+      <h2>About this thing</h2>
+      <p><b>MUSCA</b> is a live, in-browser map of the complete central nervous system of a male
+      <i>Drosophila melanogaster</i> — 166,700 neurons joined by 124 million synapses,
+      reconstructed from electron microscopy by HHMI Janelia, Google Research and collaborators
+      and released as <code>male-cns:v1.0</code>.</p>
+
+      <h3>What you can do</h3>
+      <ul>
+        <li><b>Atlas</b> — fly around the real wiring diagram. Every dot is a neuron at its real soma
+        coordinate; the haze is a 1.1-million-point sample of real synapse locations.</li>
+        <li><b>Poke</b> — drop a spike into a single cell and watch it propagate across real synapses.
+        The wave respects real connection weights, so it goes lumpy, stalls, and jumps — exactly where
+        the anatomy says it should.</li>
+        <li><b>Reverse</b> — pick a behaviour. The app searches the connectome backwards for the
+        strongest anatomical path from sensory cells to the motor neurons that execute it.</li>
+        <li><b>Lesion</b> — silence a cell type and measure how much of the brain you just cut off.</li>
+      </ul>
+
+      <h3>Where the numbers come from</h3>
+      <ul>
+        <li>Soma coordinates, cell types, classes, sides, dimorphism flags — MaleCNS v1.0
+        <code>body-annotations</code>.</li>
+        <li>Connection weights — MaleCNS v1.0 <code>connectome-weights</code> (segment-to-segment
+        synaptic counts, min confidence 0.5). The 25.6 M connections among annotated neurons are
+        pruned for legibility: edges below 6 synapses are dropped, and each neuron keeps only its
+        24 strongest outputs, leaving 2.8 M edges drawn here.</li>
+        <li>Synapse cloud — a 26-row-group sample of MaleCNS v1.0 <code>syn-points</code>.</li>
+        <li>Transmitters — MaleCNS v1.0 aggregate neurotransmitter predictions.</li>
+      </ul>
+
+      <h3>Caveats — read these</h3>
+      <p>The cascade is a <b>toy model</b>. Real neurons have ion channels, inhibition, delays and
+      adaptation; here activity is just a decaying, weight-scaled diffusion across an anatomical
+      graph. It shows you <i>where a signal can go</i>, not what the fly actually computes.
+      The "reverse" paths are the strongest anatomical routes, not verified physiological circuits.
+      Nothing here is a claim about behaviour — it is a way to see the shape of a brain.</p>
+
+      <p class="cite">
+        Dorkenwald, S., Matsliah, A., Sterling, A.R. et&nbsp;al.
+        <i>Sexual dimorphism in the complete connectome of the Drosophila male central nervous
+        system.</i> Cell (2026). · Data: <code>male-cns:v1.0</code>, Janelia FlyEM, CC-BY 4.0.
+      </p>
+      <p class="cite dim">Built as an independent visualisation. Not affiliated with Janelia, Google or the authors.</p>
+    </div>
+  </div>
+
+  <div id="err" class="modal" hidden><div class="modal-card"><h2>Something broke</h2><pre id="errMsg"></pre></div></div>
+</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+  }
+}
+</script>
+<script type="module" src="assets/js/main.js"></script>
+</body>
+</html>

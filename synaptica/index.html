@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>SYNAPTICA — the fruit fly brain, alive</title>
+  <meta name="description" content="An interactive, playable 3D simulation of the complete male fruit-fly brain connectome (166,000 neurons, 125M synapses). Fire real neural pathways and train the Mushroom Body. Built from the Google × HHMI Janelia connectomics milestone." />
+  <meta property="og:title" content="SYNAPTICA — the fruit fly brain, alive" />
+  <meta property="og:description" content="Play with the world's largest brain map: fire real connectome pathways and train the fly's memory centre, in your browser." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Space+Grotesk:wght@600;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body>
+  <canvas id="stage"></canvas>
+
+  <!-- top HUD -->
+  <header id="hud">
+    <div class="brand">
+      <a href="../" style="display:inline-flex;align-items:center;gap:4px;text-decoration:none;color:#00e5ff;font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:6px;padding:3px 8px;background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.25);border-radius:6px;transition:all .2s">← HUB</a>
+      <div class="logo">SYNAPTICA</div>
+      <div class="tag">the fruit fly brain, alive</div>
+    </div>
+    <div class="stats">
+      <div class="stat"><span class="k">Neurons</span><span class="v" id="fact-neurons">—</span></div>
+      <div class="stat"><span class="k">Synapses (map)</span><span class="v" id="fact-synapses">—</span></div>
+      <div class="stat"><span class="k">Firing now</span><span class="v live" id="stat-synapses-live">0</span></div>
+      <div class="stat"><span class="k">Mode</span><span class="v" id="stat-mode">Free Fire</span></div>
+    </div>
+  </header>
+
+  <!-- legend -->
+  <div id="legend" class="panel"></div>
+
+  <!-- control dock -->
+  <div id="dock" class="panel">
+    <div class="modes">
+      <button id="mode-free" class="active">Free Fire</button>
+      <button id="mode-sensory">Sensory</button>
+      <button id="mode-train">Train Memory</button>
+      <button id="mode-ambient">Ambient</button>
+    </div>
+
+    <div id="ctx-free" class="ctx">
+      <p class="hint">Drag to rotate · scroll to zoom · <b>click any glowing label</b> to fire a signal and watch it cascade through the real connectome.</p>
+    </div>
+
+    <div id="ctx-sensory" class="ctx" style="display:none">
+      <p class="hint">Inject real sensory input and watch it flow to behaviour.</p>
+      <div class="btnrow">
+        <button id="btn-eyes" class="act">⚡ Flash Eyes</button>
+        <button id="btn-odor" class="act">🌸 Puff Odor</button>
+      </div>
+    </div>
+
+    <div id="ctx-train" class="ctx" style="display:none">
+      <p class="hint">The <b>Mushroom Body</b> is the fly's learning centre. Repeatedly firing a cue strengthens its synapses — neurons that fire together, wire together.</p>
+      <div class="btnrow">
+        <button id="btn-train" class="act">🧠 Train Cue</button>
+        <button id="btn-recall" class="act">⚡ Recall</button>
+        <button id="btn-resetmem" class="ghost">Reset</button>
+      </div>
+      <div class="mem">
+        <div class="mem-top"><span>Memory strength</span><span id="mem-pct">0%</span></div>
+        <div class="mem-track"><div id="mem-bar" class="mem-fill"></div></div>
+        <div class="mem-sub">trained <b id="train-count">0</b>× — recall to see the learned pathway fire faster &amp; brighter</div>
+      </div>
+    </div>
+
+    <div id="ctx-ambient" class="ctx" style="display:none">
+      <p class="hint">Sit back — the brain fires itself. Random sensory &amp; central signals ripple through the connectome as a living light-show.</p>
+      <div class="btnrow"><button id="btn-ambient" class="act">⏸ Pause</button></div>
+    </div>
+  </div>
+
+  <!-- region info -->
+  <div id="info" class="panel"></div>
+
+  <!-- toast -->
+  <div id="toast"></div>
+
+  <!-- footer -->
+  <footer id="foot">
+    <span>Built from <b id="fact-source">Google × HHMI Janelia</b> · complete male <i>Drosophila</i> connectome, <i>Cell</i> 2026</span>
+    <span class="src">Data: male-cns.janelia.org · drag / scroll / click to explore</span>
+  </footer>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/engine.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
