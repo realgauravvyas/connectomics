@@ -4,6 +4,7 @@ Runs a max-strength route search (same objective as the app's Reverse mode)
 from sensory cell types to motor cell types and prints the real chain of
 neurons it finds, so only pathways that genuinely exist get shipped.
 """
+import array
 import heapq
 import json
 import math
@@ -11,7 +12,11 @@ import os
 import struct
 import sys
 
-import numpy as np
+try:
+    import numpy as np
+    HAS_NUMPY = True
+except ImportError:
+    HAS_NUMPY = False
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA = os.path.join(ROOT, "data")
@@ -23,23 +28,40 @@ def load():
     buf = open(os.path.join(DATA, "neurons.bin"), "rb").read()
     n = struct.unpack_from("<I", buf, 4)[0]
     o = 16
-    def arr(dt, cnt, off):
-        it = np.dtype(dt).itemsize
-        return np.frombuffer(buf[off:off + cnt * it], dtype=dt)
-    body = arr("<i4", n, o); o += 4 * n
-    o += 12 * n                       # positions, not needed here
-    o += n                            # superclass
-    lab = arr("<u4", n, o); o += 4 * n
-    o += n + n + n + n                # nt, side, dim, hasSoma
-    o += 4 * n + 4 * n                # pre, post
+
+    if HAS_NUMPY:
+        def arr(dt, cnt, off):
+            it = np.dtype(dt).itemsize
+            return np.frombuffer(buf[off:off + cnt * it], dtype=dt)
+        body = arr("<i4", n, o); o += 4 * n
+        o += 12 * n                       # positions, not needed here
+        o += n                            # superclass
+        lab = arr("<u4", n, o); o += 4 * n
+    else:
+        body = array.array("i")
+        body.frombytes(buf[o:o + 4 * n]); o += 4 * n
+        o += 12 * n
+        o += n
+        lab = array.array("I")
+        lab.frombytes(buf[o:o + 4 * n]); o += 4 * n
 
     eb = open(os.path.join(DATA, "edges.bin"), "rb").read()
     en = struct.unpack_from("<I", eb, 4)[0]
     ne = struct.unpack_from("<I", eb, 8)[0]
-    offs = np.frombuffer(eb[16:16 + 4 * (en + 1)], dtype="<u4")
-    dst = np.frombuffer(eb[16 + 4 * (en + 1):16 + 4 * (en + 1) + 4 * ne], dtype="<u4")
-    wgt = np.frombuffer(eb[16 + 4 * (en + 1) + 4 * ne:
-                            16 + 4 * (en + 1) + 4 * ne + ne], dtype="<u1")
+
+    if HAS_NUMPY:
+        offs = np.frombuffer(eb[16:16 + 4 * (en + 1)], dtype="<u4")
+        dst = np.frombuffer(eb[16 + 4 * (en + 1):16 + 4 * (en + 1) + 4 * ne], dtype="<u4")
+        wgt = np.frombuffer(eb[16 + 4 * (en + 1) + 4 * ne:
+                                16 + 4 * (en + 1) + 4 * ne + ne], dtype="<u1")
+    else:
+        offs = array.array("I")
+        offs.frombytes(eb[16:16 + 4 * (en + 1)])
+        dst = array.array("I")
+        dst.frombytes(eb[16 + 4 * (en + 1):16 + 4 * (en + 1) + 4 * ne])
+        wgt = array.array("B")
+        wgt.frombytes(eb[16 + 4 * (en + 1) + 4 * ne:16 + 4 * (en + 1) + 4 * ne + ne])
+
     return meta, labels, body, lab, offs, dst, wgt, ne
 
 
@@ -52,7 +74,9 @@ def members(labels, lab, names):
                 break
         else:
             print(f"   !! label not found: {nm}")
-    return np.where(np.isin(lab, list(want)))[0]
+    if HAS_NUMPY:
+        return np.where(np.isin(lab, list(want)))[0]
+    return [i for i, x in enumerate(lab) if x in want]
 
 
 def route(offs, dst, wgt, srcs, tgts, hop_penalty=0.55, max_hops=14):
@@ -63,23 +87,67 @@ def route(offs, dst, wgt, srcs, tgts, hop_penalty=0.55, max_hops=14):
     """
     n = len(offs)
     LOGMAX = math.log(255)
-    dist = np.full(n, np.inf)
-    prev = np.full(n, -1, dtype=np.int64)
-    done = np.zeros(n, dtype=bool)
-    depth = np.zeros(n, dtype=np.int16)
     tset = set(int(t) for t in tgts)
     h = []
+
+    if HAS_NUMPY:
+        dist = np.full(n, np.inf)
+        prev = np.full(n, -1, dtype=np.int64)
+        done = np.zeros(n, dtype=bool)
+        depth = np.zeros(n, dtype=np.int16)
+        for s in srcs:
+            s = int(s)
+            if dist[s] > 0:
+                dist[s] = 0.0
+                heapq.heappush(h, (0.0, s))
+        found = -1
+        while h:
+            d, u = heapq.heappop(h)
+            if done[u] or d > dist[u]:
+                continue
+            done[u] = True
+            if u in tset:
+                found = u
+                break
+            nd = depth[u] + 1
+            if nd > max_hops:
+                continue
+            for e in range(offs[u], offs[u + 1]):
+                v = int(dst[e])
+                if done[v]:
+                    continue
+                w = int(wgt[e]) or 1
+                alt = d + (LOGMAX - math.log(w)) + hop_penalty
+                if alt < dist[v]:
+                    dist[v] = alt
+                    prev[v] = u
+                    depth[v] = nd
+                    heapq.heappush(h, (alt, v))
+        if found < 0:
+            return None
+        path = []
+        cur = found
+        while cur != -1:
+            path.append(cur)
+            cur = int(prev[cur])
+        return path[::-1]
+
+    dist = {}
+    prev = {}
+    done = set()
+    depth = {}
     for s in srcs:
         s = int(s)
-        if dist[s] > 0:
-            dist[s] = 0.0
-            heapq.heappush(h, (0.0, s))
+        dist[s] = 0.0
+        prev[s] = -1
+        depth[s] = 0
+        heapq.heappush(h, (0.0, s))
     found = -1
     while h:
         d, u = heapq.heappop(h)
-        if done[u] or d > dist[u]:
+        if u in done or d > dist.get(u, float('inf')):
             continue
-        done[u] = True
+        done.add(u)
         if u in tset:
             found = u
             break
@@ -88,11 +156,11 @@ def route(offs, dst, wgt, srcs, tgts, hop_penalty=0.55, max_hops=14):
             continue
         for e in range(offs[u], offs[u + 1]):
             v = int(dst[e])
-            if done[v]:
+            if v in done:
                 continue
             w = int(wgt[e]) or 1
             alt = d + (LOGMAX - math.log(w)) + hop_penalty
-            if alt < dist[v]:
+            if alt < dist.get(v, float('inf')):
                 dist[v] = alt
                 prev[v] = u
                 depth[v] = nd
@@ -103,7 +171,7 @@ def route(offs, dst, wgt, srcs, tgts, hop_penalty=0.55, max_hops=14):
     cur = found
     while cur != -1:
         path.append(cur)
-        cur = int(prev[cur])
+        cur = prev[cur]
     return path[::-1]
 
 

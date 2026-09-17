@@ -9,6 +9,16 @@ import { fileURLToPath } from 'url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
+const pythonBin = process.env.PYTHON || (() => {
+  for (const bin of [process.platform === 'win32' ? 'python' : 'python3', 'python', 'python3']) {
+    try {
+      const res = spawnSync(bin, ['--version'], { stdio: 'ignore' });
+      if (res.status === 0) return bin;
+    } catch {}
+  }
+  return 'python';
+})();
+
 const suites = [
   {
     name: '166k (Electrophysiology Analysis)',
@@ -25,7 +35,7 @@ const suites = [
   {
     name: 'MUSCA (9 Behavioral Reverse Circuits)',
     cwd: resolve(__dirname, 'musca'),
-    cmd: 'python',
+    cmd: pythonBin,
     args: ['tools/behaviours.py'],
   },
   {
