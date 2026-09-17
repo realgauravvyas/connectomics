@@ -1,0 +1,26 @@
+{
+  "name": "connectomics",
+  "version": "1.0.0",
+  "description": "In-Silico Drosophila Central Nervous System Simulation & Behavioral Mapping Suite",
+  "type": "module",
+  "scripts": {
+    "test": "node test-all.mjs",
+    "serve": "npx serve ."
+  },
+  "keywords": [
+    "connectomics",
+    "drosophila",
+    "neuroscience",
+    "simulation",
+    "neural-network",
+    "webgl",
+    "spiking-neural-network",
+    "reinforcement-learning"
+  ],
+  "author": "Gaurav Vyas",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/realgauravvyas/connectomics.git"
+  }
+}

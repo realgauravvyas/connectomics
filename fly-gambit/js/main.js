@@ -14,7 +14,8 @@ const FG = globalThis.FG;
 const trainer = new FG.FlyTrainer();
 FG._demoBrain = trainer.brain;
 
-const SAVE_KEY = '***';
+const SAVE_KEY = 'flygambit-v1';
+const LEGACY_KEY = '***';
 let game = trainer.beginGame();
 let show = trainer.beginGame();   // showcase game watched in TURBO mode
 let showAcc = 0;
@@ -293,6 +294,7 @@ function playMoveSound(mv, status) {
 $('btn-pause').onclick = togglePause;
 $('btn-reset').onclick = () => {
   localStorage.removeItem(SAVE_KEY);
+  localStorage.removeItem(LEGACY_KEY);
   trainer.gamesPlayed = 0; totalPlies = 0;
   trainer.captureRates.length = 0; trainer.returns.length = 0;
   trainer.accVsGreedy = 0; trainer._nAcc = 0;
@@ -338,7 +340,7 @@ function autosave() {
 }
 function restore() {
   try {
-    const raw = localStorage.getItem(SAVE_KEY);
+    const raw = localStorage.getItem(SAVE_KEY) || localStorage.getItem(LEGACY_KEY);
     if (!raw) return;
     const d = JSON.parse(raw);
     if (!d || d.v !== 1) return;

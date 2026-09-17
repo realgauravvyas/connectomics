@@ -523,15 +523,18 @@ async function runTour() {
   brain.resetCamera();
   UI.toast('MUSCA · the complete male fly CNS', 2600);
   await wait(3200);
+  if (!state.tour) return;
 
   // 1. ping a sensory cell
   setMode('poke');
   const s = randomSensory();
   select(s, { fly: true });
   await wait(1400);
+  if (!state.tour) return;
   runCascade([s]);
   UI.toast('Poke — a spike spreads across real synapses');
   await wait(6500);
+  if (!state.tour) return;
 
   // 2. reverse a behaviour
   setMode('reverse');
@@ -541,10 +544,12 @@ async function runTour() {
   runBehaviour(id);
   UI.toast('Reverse — name a behaviour, find the neurons');
   await wait(7000);
+  if (!state.tour) return;
 
   // 3. lesion
   setMode('lesion');
   await wait(600);
+  if (!state.tour) return;
   const sensoryLabels = [];
   for (let i = 0; i < D.labels.length; i++) {
     const c = D.lstart[i + 1] - D.lstart[i];
@@ -554,6 +559,7 @@ async function runTour() {
     cutLabel(sensoryLabels[(Math.random() * sensoryLabels.length) | 0]);
     UI.toast('Lesion — cut the input, watch the reach collapse');
     await wait(6500);
+    if (!state.tour) return;
   }
 
   setMode('atlas');

@@ -159,7 +159,19 @@ python -m http.server 8000
 # http://localhost:8000/
 ```
 
-### Running Sub-Project Offline Tests
+### 🧪 Unified Verification Suite (Single Command)
+
+Run all 9 offline test suites across the complete 7-app simulator suite with a single command:
+
+```bash
+# Run all tests across all 7 projects
+npm test
+
+# or directly with Node:
+node test-all.mjs
+```
+
+### Running Sub-Project Offline Tests Individually
 ```bash
 # 166k headless WebGL and electrophysiology test
 cd 166k && node tools/analyze.mjs && cd ..
