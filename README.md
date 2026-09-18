@@ -79,12 +79,16 @@ Inspired by the landmark Google Research, Howard Hughes Medical Institute (HHMI 
 
 <p align="center">
   <b>CHRONOFLY</b> — Counterfactual Neural Twin Lab<br>
-  <a href="https://realgauravvyas.github.io/connectomics/chronofly/">Open CHRONOFLY</a>
+  <a href="https://realgauravvyas.github.io/connectomics/chronofly/">
+    <img src="chronofly/assets/screens/dashboard.png" alt="CHRONOFLY Dashboard" width="720" />
+  </a>
 </p>
 
 <p align="center">
   <b>ONEIRO</b> — Sleep-Replay Maze Observatory<br>
-  <a href="https://realgauravvyas.github.io/connectomics/oneiro/">Open ONEIRO</a>
+  <a href="https://realgauravvyas.github.io/connectomics/oneiro/">
+    <img src="oneiro/assets/screens/dashboard.png" alt="ONEIRO Dashboard" width="720" />
+  </a>
 </p>
 
 ---

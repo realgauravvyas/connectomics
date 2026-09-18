@@ -18,7 +18,6 @@ const telemetry = document.getElementById('telemetry');
 const caption = document.getElementById('flight-caption');
 const runBtn = document.getElementById('runBtn');
 const playBtn = document.getElementById('playBtn');
-const pauseBtn = document.getElementById('pauseBtn');
 const restartBtn = document.getElementById('restartBtn');
 const soundBtn = document.getElementById('soundBtn');
 const seedInput = document.getElementById('seed');
@@ -406,7 +405,6 @@ playBtn.addEventListener('click', () => {
   if (anim.playing) pauseFlight();
   else resumeFlight();
 });
-pauseBtn.addEventListener('click', pauseFlight);
 restartBtn.addEventListener('click', () => {
   audio.start();
   startFlight();

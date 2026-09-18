@@ -2,6 +2,35 @@
 
 **Synthetic educational model** — A deterministic, seeded recurrent neural circuit with two identical twin branches. One branch receives a targeted intervention (silencing, stimulation, or gain modulation) while the other serves as a true control under identical inputs. The entire simulation runs client-side in your browser with zero backend, zero build steps, and zero runtime dependencies.
 
+<p align="center">
+  <a href="https://realgauravvyas.github.io/connectomics/chronofly/">
+    <img src="https://img.shields.io/badge/🚀_LAUNCH_CHRONOFLY-realgauravvyas.github.io%2Fconnectomics%2Fchronofly-a855f7?style=for-the-badge&logo=google-chrome&logoColor=black" alt="Launch CHRONOFLY" />
+  </a>
+  <a href="https://realgauravvyas.github.io/connectomics/">
+    <img src="https://img.shields.io/badge/CONNECTOMICS-MASTER_HUB-00e5ff?style=for-the-badge&logo=github&logoColor=white" alt="Connectomics Hub" />
+  </a>
+</p>
+
+[![Live Status](https://img.shields.io/badge/GitHub_Pages-LIVE-00ff88?style=flat-square&logo=github)](https://realgauravvyas.github.io/connectomics/chronofly/)
+[![3D Flight](https://img.shields.io/badge/3D_Twin_Flight-WebGL_Three.js-a855f7?style=flat-square)](https://realgauravvyas.github.io/connectomics/chronofly/)
+[![Sound](https://img.shields.io/badge/Procedural_Audio-WebAudio_Zero_Assets-ffb703?style=flat-square)](https://realgauravvyas.github.io/connectomics/chronofly/)
+[![Dependencies](https://img.shields.io/badge/Dependencies-Zero-brightgreen?style=flat-square)](https://realgauravvyas.github.io/connectomics/chronofly/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
+
+> 🪰 **Run Live in Your Browser:**  
+> 👉 **[https://realgauravvyas.github.io/connectomics/chronofly/](https://realgauravvyas.github.io/connectomics/chronofly/)**  
+> *Part of the [CONNECTOMICS Suite](https://realgauravvyas.github.io/connectomics/) by Gaurav Vyas.*
+
+---
+
+## 📸 Dashboard
+
+<p align="center">
+  <a href="https://realgauravvyas.github.io/connectomics/chronofly/">
+    <img src="assets/screens/dashboard.png" alt="CHRONOFLY Dashboard — twin voltage trajectories and 3D twin flight" width="720" />
+  </a>
+</p>
+
 ---
 
 ## Concept
@@ -78,7 +107,7 @@ Every experiment is completely reproducible given the same seed and intervention
 2. Record the **Intervention** selected.
 3. The voltage traces are deterministic functions of (seed, intervention).
 
-The source code (`sim.js`, `engine.js`, `main.js`) is pure JavaScript with no external npm packages. You can copy the `chronofly/` directory to another location and it will run offline.
+The source code (`js/sim.js`, `js/engine.js`, `js/main.js`) is pure JavaScript with no external npm packages. You can copy the `chronofly/` directory to another location and it will run offline.
 
 ---
 
@@ -86,15 +115,18 @@ The source code (`sim.js`, `engine.js`, `main.js`) is pure JavaScript with no ex
 
 | File | Purpose |
 |---|---|
-| `index.html` | Page structure, hero, controls, canvas, telemetry |
-| `style.css` | Suite-aligned dark portal styling with a purple/pink accent |
-| `sim.js` | Deterministic, DOM-free twin-simulation core (LIF dynamics, N4 flight-path mapping) used by both the page and tests |
-| `fly3d.js` | 3D neon fly model (body, compound eyes, flapping wings, glow disc) plus trail helper |
+| `index.html` | Page structure, hero, controls, canvases, telemetry |
+| `css/style.css` | Suite-aligned dark portal styling with a purple/pink accent |
+| `js/sim.js` | Deterministic, DOM-free twin-simulation core (LIF dynamics, N4 flight-path mapping) used by both the page and tests |
+| `js/fly3d.js` | 3D neon fly model (body, compound eyes, flapping wings, glow disc) plus trail helper |
+| `js/audio.js` | Procedural WebAudio wing-buzz and divergence blips — zero audio files |
+| `js/engine.js` | Browser rendering, flight animation, controls, telemetry, and debug state |
+| `js/main.js` | Entrypoint, UI wiring, global debug API |
 | `vendor/three.min.js` | Vendored WebGL library, same approach as fly-sprint/fly-gambit — zero npm dependencies |
-| `audio.js` | Procedural WebAudio wing-buzz and divergence blips — zero audio files |
-| `engine.js` | Browser rendering, flight animation, controls, telemetry, and debug state |
-| `main.js` | Entrypoint, UI wiring, global debug API |
+| `assets/screens/dashboard.png` | Dashboard screenshot for the suite gallery |
+| `assets/favicon.svg` | Project favicon |
 | `test/smoke.mjs` | Determinism, intervention-effect, isolation, and validation checks |
+| `LICENSE` | MIT license |
 | `README.md` | This file |
 
 ---

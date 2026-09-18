@@ -2,6 +2,35 @@
 
 **Synthetic educational model** — A deterministic hippocampal‑cortical network that learns a 1‑D maze trajectory via a simple Hebbian rule, then exhibits sharp‑wave ripple (SWR)‑like events during offline rest intervals. The entire simulation runs client‑side in your browser with zero backend, zero build steps, and zero runtime dependencies.
 
+<p align="center">
+  <a href="https://realgauravvyas.github.io/connectomics/oneiro/">
+    <img src="https://img.shields.io/badge/🚀_LAUNCH_ONEIRO-realgauravvyas.github.io%2Fconnectomics%2Foneiro-3ddc97?style=for-the-badge&logo=google-chrome&logoColor=black" alt="Launch ONEIRO" />
+  </a>
+  <a href="https://realgauravvyas.github.io/connectomics/">
+    <img src="https://img.shields.io/badge/CONNECTOMICS-MASTER_HUB-00e5ff?style=for-the-badge&logo=github&logoColor=white" alt="Connectomics Hub" />
+  </a>
+</p>
+
+[![Live Status](https://img.shields.io/badge/GitHub_Pages-LIVE-00ff88?style=flat-square&logo=github)](https://realgauravvyas.github.io/connectomics/oneiro/)
+[![3D Flight](https://img.shields.io/badge/3D_Maze_Flight-WebGL_Three.js-3ddc97?style=flat-square)](https://realgauravvyas.github.io/connectomics/oneiro/)
+[![Sound](https://img.shields.io/badge/Procedural_Audio-WebAudio_Zero_Assets-ffb703?style=flat-square)](https://realgauravvyas.github.io/connectomics/oneiro/)
+[![Dependencies](https://img.shields.io/badge/Dependencies-Zero-brightgreen?style=flat-square)](https://realgauravvyas.github.io/connectomics/oneiro/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
+
+> 🪰 **Run Live in Your Browser:**  
+> 👉 **[https://realgauravvyas.github.io/connectomics/oneiro/](https://realgauravvyas.github.io/connectomics/oneiro/)**  
+> *Part of the [CONNECTOMICS Suite](https://realgauravvyas.github.io/connectomics/) by Gaurav Vyas.*
+
+---
+
+## 📸 Dashboard
+
+<p align="center">
+  <a href="https://realgauravvyas.github.io/connectomics/oneiro/">
+    <img src="assets/screens/dashboard.png" alt="ONEIRO Dashboard — 3D maze flight, activity heatmap and learning curve" width="720" />
+  </a>
+</p>
+
 ---
 
 ## Concept
@@ -77,7 +106,7 @@ Every experiment is completely reproducible given the same seed. To cite or shar
 2. Record the **Replay Speed** (it affects only playback rate and plot compression, not the simulation).
 3. The maze walk, SWR event timestamps, weight evolution, and heat‑map colours are deterministic functions of the seed.
 
-The source code (`sim.js`, `engine.js`, `main.js`) is pure JavaScript — no npm packages, no build step. Copy the `oneiro/` directory anywhere and it will run offline.
+The source code (`js/sim.js`, `js/engine.js`, `js/main.js`) is pure JavaScript — no npm packages, no build step. Copy the `oneiro/` directory anywhere and it will run offline.
 
 ---
 
@@ -85,15 +114,18 @@ The source code (`sim.js`, `engine.js`, `main.js`) is pure JavaScript — no npm
 
 | File | Purpose |
 |---|---|
-| `index.html` | Page structure, hero, controls, two‑panel canvas, telemetry |
-| `style.css` | Suite-aligned dark portal styling with an emerald/cyan accent |
-| `sim.js` | Deterministic, DOM-free replay core (maze walk, SWR events, Hebbian update) used by both the page and tests |
-| `fly3d.js` | 3D neon fly model (body, compound eyes, flapping wings, glow disc) plus trail helper |
+| `index.html` | Page structure, hero, controls, canvases, telemetry |
+| `css/style.css` | Suite-aligned dark portal styling with an emerald/cyan accent |
+| `js/sim.js` | Deterministic, DOM-free replay core (maze walk, SWR events, Hebbian update) used by both the page and tests |
+| `js/fly3d.js` | 3D neon fly model (body, compound eyes, flapping wings, glow disc) plus trail helper |
+| `js/audio.js` | Procedural WebAudio wing-buzz, SWR chimes, and UI clicks — zero audio files |
+| `js/engine.js` | Browser rendering, flight animation, controls, telemetry, and debug state |
+| `js/main.js` | Entrypoint, UI wiring, global debug API |
 | `vendor/three.min.js` | Vendored WebGL library, same approach as fly-sprint/fly-gambit — zero npm dependencies |
-| `audio.js` | Procedural WebAudio wing-buzz, SWR chimes, and UI clicks — zero audio files |
-| `engine.js` | Browser rendering, flight animation, controls, telemetry, and debug state |
-| `main.js` | Entrypoint, UI wiring, global debug API |
+| `assets/screens/dashboard.png` | Dashboard screenshot for the suite gallery |
+| `assets/favicon.svg` | Project favicon |
 | `test/smoke.mjs` | Determinism, event-range, monotonic-learning, and validation checks |
+| `LICENSE` | MIT license |
 | `README.md` | This file |
 
 ---
