@@ -7,9 +7,10 @@
   <meta name="description" content="Synthetic sleep‑replay and maze‑learning simulation: observe hippocampal sharp‑wave ripples coupled with cortical reactivation during rest intervals." />
   <meta property="og:title" content="ONEIRO · Sleep‑Replay Maze Observatory" />
   <meta property="og:description" content="Synthetic sleep‑replay and maze‑learning simulation: observe hippocampal sharp‑wave ripples coupled with cortical reactivation during rest intervals." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -23,9 +24,8 @@
         </div>
       </div>
       <div class="header-links">
-        <a href="https://github.com/realgauravvyas/connectomics" class="badge-link" target="_blank" rel="noopener">
-          GitHub
-        </a>
+        <a href="../" class="badge-link">← HUB</a>
+        <a href="https://github.com/realgauravvyas/connectomics/tree/main/oneiro" class="badge-link" target="_blank" rel="noopener">Source</a>
       </div>
     </header>
 
@@ -65,19 +65,21 @@
       <div class="card-top">
         <h3 class="card-name">Experiment</h3>
       </div>
-      <div style="flex: 1; min-width: 0;">
-        <label style="display:block;margin-bottom:6px;font-size:12px;color:var(--text-muted);">Seed</label>
-        <input id="seed" type="number" min="0" step="1" value="123" style="width:100%;padding:6px;font-size:13px;border-radius:6px;border:1px solid var(--border-subtle);background:var(--bg-surface);color:#fff;" />
+      <div class="controls-grid">
+        <div class="field">
+          <label for="seed">Seed</label>
+          <input id="seed" type="number" min="0" step="1" value="123" />
+        </div>
+        <div class="field">
+          <label for="speed">Replay Speed</label>
+          <select id="speed">
+            <option value="1x">1x (real‑time)</option>
+            <option value="5x" selected>5x (accelerated)</option>
+            <option value="20x">20x (fast)</option>
+          </select>
+        </div>
       </div>
-      <div style="flex: 1; min-width: 0;">
-        <label style="display:block;margin-bottom:6px;font-size:12px;color:var(--text-muted);">Replay Speed</label>
-        <select id="speed" style="width:100%;padding:6px;font-size:13px;border-radius:6px;border:1px solid var(--border-subtle);background:var(--bg-surface);color:#fff;">
-          <option value="1x">1x (real‑time)</option>
-          <option value="5x" selected>5x (accelerated)</option>
-          <option value="20x">20x (fast)</option>
-        </select>
-      </div>
-      <button id="runBtn" class="btn-launch btn-emerald" style="width:100%;margin-top:12px;">
+      <button id="runBtn" class="btn-launch" type="button">
         Run Replay Simulation
       </button>
     </section>
@@ -86,9 +88,13 @@
       <div class="card-top">
         <h3 class="card-name">Replay Event & Synaptic Strength</h3>
       </div>
-      <canvas id="canvas" width="600" height="400"></canvas>
-      <pre id="telemetry" style="margin-top:12px;padding:12px;background:var(--bg-surface);border-radius:8px;color:#fff;font-family:var(--font-mono);font-size:12px;line-height:1.4;"></pre>
+      <canvas id="canvas" width="900" height="440" aria-label="Sleep-replay activity heatmap and learning curve"></canvas>
+      <pre id="telemetry" aria-live="polite"></pre>
     </section>
+
+    <footer class="site-footer">
+      Synthetic educational model. No EM, behavioral, or electrophysiology data are used or claimed.
+    </footer>
   </div>
 
   <script type="module" src="main.js"></script>

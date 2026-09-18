@@ -11,9 +11,9 @@ The model contains `20` place‑field tuned neurons and a 1‑D maze of `100` po
 - **Hippocampal** (place‑field tuned) — drives SWR event detection.
 - **Cortical** (identical place‑field tuning) — the synaptic target of Hebbian learning.
 
-A tiny Hebbian update (`Δw ∝ pre × post`) potentiates cortical weights active during high hippocampal firing. Over time, the weight matrix encodes the traversed trajectory. Occasionally a sharp‑wave ripple (SWR) event is flagged when total hippocampal activity exceeds a threshold.
+A tiny Hebbian update (`Δw ∝ pre × post`) potentiates cortical weights active during high hippocampal firing. Over time, the weight matrix encodes the traversed trajectory. A synthetic sharp‑wave ripple (SWR) event is flagged when a seeded random draw falls below a fixed probability while total hippocampal activity exceeds a calibrated synthetic threshold.
 
-Because the system is fully reseeding‑deterministic, the same seed + speed always produces the same SWR events and weight evolution — making it a clean counterfactual “rest vs. no‑rest” experiment paradigm.
+Because the system is fully reseeding‑deterministic, the same seed always produces the same SWR events and weight evolution. Replay speed only changes plot compression; it does not change the underlying simulation.
 
 ---
 
@@ -21,7 +21,7 @@ Because the system is fully reseeding‑deterministic, the same seed + speed alw
 
 ```bash
 # from the connectomics repo root
-cd connectomics-work/oneiro
+cd oneiro
 
 # start a local HTTP server (Python 3 built‑in)
 python -m http.server 8000
@@ -39,21 +39,21 @@ Or drag `index.html` into any modern browser.
 | Control | Description |
 |---|---|
 | **Seed** | Integer ≥ 0. Fixes the deterministic random weights, place fields, and position walk. Use the same number to reproduce an experiment. |
-| **Replay Speed** | Controls the effective time‑scale of the replay visualisation: `1x` (real‑time), `5x` (accelerated, default), `20x` (fast). |
+| **Replay Speed** | Controls plot compression only: `1x` shows the latest 80 steps, `5x` samples the latest 200 steps, and `20x` samples all 300 steps. |
 | **Run Experiment** | Launches a 300‑step simulation, flags SWR events, updates synaptic weights, and renders two panels. |
 
 ---
 
 ## Outputs
 
-- **Left panel (heat map)**: Colour‑coded hippocampal population activity across the last ~80 steps. Brighter cells = higher firing at that position. This is where SWR events are detected (threshold > 3.0 aggregate activity).
-- **Right panel (synaptic plot)**: Average synaptic weight magnitude `|W|` per step, showing the gradual Hebbian learning curve. The weight matrix itself encodes a “trace” of the maze trajectory.
+- **Left panel (heat map)**: Hippocampal activity normalized within the displayed window; brighter cells mean stronger relative firing. Gold ticks mark SWR events.
+- **Right panel (synaptic plot)**: Accumulated Hebbian potentiation over 300 steps, showing the gradual learning curve.
 - **Telemetry panel** below the plot shows:
   - Seed number
   - Number of detected SWR events
-  - Mean synaptic strength (|W|) as a concise quantitative read‑out
+  - Mean synaptic strength (`|W|`) as a concise quantitative read‑out
   - Selected replay speed
-- **Downloadable**: Right‑click the canvas → “Save experiment JSON” to persist seed, replay events, and the final weight matrix.
+- **Debug API**: after the page loads, `window.ONEIRO.runExperiment(seed)` reruns the same UI path, and `window.ONEIRO.getSWRCount()` returns the latest event count.
 
 ---
 
@@ -74,7 +74,7 @@ Every experiment is completely reproducible given the same seed and speed. To ci
 2. Record the **Replay Speed**.
 3. The SWR event timestamps, weight evolution, and heat‑map colours are deterministic functions of (seed, speed).
 
-The source code (`engine.js`, `main.js`) is pure JavaScript — no npm packages, no build step. Copy the `oneiro/` directory anywhere and it will run offline.
+The source code (`sim.js`, `engine.js`, `main.js`) is pure JavaScript — no npm packages, no build step. Copy the `oneiro/` directory anywhere and it will run offline.
 
 ---
 
@@ -83,9 +83,11 @@ The source code (`engine.js`, `main.js`) is pure JavaScript — no npm packages,
 | File | Purpose |
 |---|---|
 | `index.html` | Page structure, hero, controls, two‑panel canvas, telemetry |
-| `style.css` | Dark‑neurophysics UI theming (emerald / cyan accent palette) |
-| `engine.js` | Deterministic simulation core (place fields, SWR detection, Hebbian weight update, heat‑map & plot rendering) |
+| `style.css` | Suite-aligned dark portal styling with an emerald/cyan accent |
+| `sim.js` | Deterministic, DOM-free replay core used by both the page and tests |
+| `engine.js` | Browser rendering, controls, telemetry, and debug state |
 | `main.js` | Entrypoint, UI wiring, global debug API |
+| `test/smoke.mjs` | Determinism, event-range, monotonic-learning, and validation checks |
 | `README.md` | This file |
 
 ---
@@ -98,12 +100,8 @@ From the repository root:
 npm test
 ```
 
-This runs `test-all.mjs` which verifies all sub‑projects. ONEIRO and CHRONOFLY are **not** yet included in the unified test suite; you can run lightweight syntax checks manually:
+This runs `test-all.mjs`, including ONEIRO’s deterministic replay checks:
 
 ```bash
-node --check oneiro/engine.js
-node --check oneiro/main.js
-
-node --check chronofly/engine.js
-node --check chronofly/main.js
+cd oneiro && node test/smoke.mjs && cd ..
 ```

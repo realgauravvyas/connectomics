@@ -1,6 +1,6 @@
 /**
  * test-all.mjs — Unified verification suite for the CONNECTOMICS repository.
- * Runs the test suites across all 7 in-silico applications.
+ * Runs the test suites across all 9 in-silico applications.
  */
 
 import { spawnSync } from 'child_process';
@@ -75,16 +75,16 @@ const suites = [
     args: ['tools/test-engine.js'],
   },
   {
-    name: 'CHRONOFLY (Counterfactual Neural Twin Syntax)',
+    name: 'CHRONOFLY (Deterministic Counterfactual Twins)',
     cwd: resolve(__dirname, 'chronofly'),
     cmd: process.execPath,
-    args: ['--check'],
+    args: ['test/smoke.mjs'],
   },
   {
-    name: 'ONEIRO (Sleep‑Replay Syntax)',
+    name: 'ONEIRO (Deterministic Sleep Replay)',
     cwd: resolve(__dirname, 'oneiro'),
     cmd: process.execPath,
-    args: ['--check'],
+    args: ['test/smoke.mjs'],
   },
 ];
 

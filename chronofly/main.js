@@ -7,11 +7,10 @@ import './engine.js';
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-  // expose globally for debugging in console
+  const previous = window.CHRONOFLY || {};
   window.CHRONOFLY = {
+    ...previous,
     runExperiment: (seed, intervention) => {
-      // re-init weights anew each call if desired
-      // simply delegate to engine run logic via seed and intervention
       const seedNum = Math.max(0, typeof seed === 'number' ? seed : 42);
       const inter = intervention || 'none';
       document.getElementById('seed').value = seedNum;
@@ -21,13 +20,13 @@ document.addEventListener('DOMContentLoaded', () => {
     getDivergence: () => {
       const tracesA = window.CHRONOFLY._lastTracesA;
       const tracesB = window.CHRONOFLY._lastTracesB;
-      if (!tracesA) return null;
-      let s = 0;
-      for (let i = 0; i < tracesA.length; i++) {
+      if (!tracesA || !tracesB) return null;
+      let sum = 0;
+      for (let i = 0; i < tracesA.length; i += 1) {
         const d = tracesA[i] - tracesB[i];
-        s += d * d;
+        sum += d * d;
       }
-      return s / tracesA.length;
+      return sum / tracesA.length;
     }
   };
 });

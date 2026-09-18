@@ -23,7 +23,7 @@ Because the weights and initial conditions are seeded deterministically, the *on
 
 ```bash
 # from the connectomics repo root
-cd connectomics-work/chronofly
+cd chronofly
 
 # start a local HTTP server (any will do; Python 3 is built-in)
 python -m http.server 8000
@@ -42,7 +42,7 @@ Or drag `index.html` into any modern browser (Chrome, Firefox, Safari, Edge).
 |---|---|
 | **Seed** | Integer ≥ 0. Fixes the deterministic random weights and initial states. Use the same number to reproduce an experiment. |
 | **Intervention** | Choose from: `none` (identical twins), `silence`, `stimulate`, or `modulate`. |
-| **Run Experiment** | Launches a 200-step simulation and renders the voltage trace of neuron 0 for both twins, plus the mean‑squared divergence. |
+| **Run Experiment** | Launches a 200-step simulation and renders the voltage trace of neuron N4 for both twins, plus the mean‑squared divergence. |
 
 ---
 
@@ -53,8 +53,8 @@ Or drag `index.html` into any modern browser (Chrome, Firefox, Safari, Edge).
   - Seed number
   - Selected intervention
   - Mean‑squared error between the two voltage traces (a quantitative measure of divergence)
-  - Mean voltage of neuron 0 for each twin
-- **Downloadable**: The experiment state (seed, intervention, traces) can be saved by right‑clicking the canvas and selecting “Save experiment JSON” (see source).
+  - Mean voltage of neuron N4 for each twin
+- **Debug API**: after the page loads, `window.CHRONOFLY.runExperiment(seed, intervention)` reruns the same UI path, and `window.CHRONOFLY.getDivergence()` returns the latest divergence.
 
 ---
 
@@ -75,7 +75,7 @@ Every experiment is completely reproducible given the same seed and intervention
 2. Record the **Intervention** selected.
 3. The voltage traces are deterministic functions of (seed, intervention).
 
-The source code (engine.js, main.js) is pure JavaScript with no external npm packages. You can copy the `chronofly/` directory to another location and it will run offline.
+The source code (`sim.js`, `engine.js`, `main.js`) is pure JavaScript with no external npm packages. You can copy the `chronofly/` directory to another location and it will run offline.
 
 ---
 
@@ -84,9 +84,11 @@ The source code (engine.js, main.js) is pure JavaScript with no external npm pac
 | File | Purpose |
 |---|---|
 | `index.html` | Page structure, hero, controls, canvas, telemetry |
-| `style.css` | Dark‑cybernetic UI theming (cyan / amber accent palette) |
-| `engine.js` | Deterministic twin simulation core (LIF dynamics, interventions, trace generation, divergence) |
+| `style.css` | Suite-aligned dark portal styling with a purple/pink accent |
+| `sim.js` | Deterministic, DOM-free twin-simulation core used by both the page and tests |
+| `engine.js` | Browser rendering, controls, telemetry, and debug state |
 | `main.js` | Entrypoint, UI wiring, global debug API |
+| `test/smoke.mjs` | Determinism, intervention-effect, isolation, and validation checks |
 | `README.md` | This file |
 
 ---
@@ -99,9 +101,8 @@ From the repository root:
 npm test
 ```
 
-This runs `test-all.mjs` which verifies all 9 sub‑projects. CHRONOFLY is not yet included in the unified test suite; you can run its engine check manually:
+This runs `test-all.mjs`, including CHRONOFLY’s deterministic twin checks:
 
 ```bash
-node --check chronofly/engine.js
-node --check chronofly/main.js
+cd chronofly && node test/smoke.mjs && cd ..
 ```

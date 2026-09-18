@@ -19,7 +19,7 @@
 
 > 🌐 **Experience the Complete Suite Live Online:**  
 > 👉 **[https://realgauravvyas.github.io/connectomics/](https://realgauravvyas.github.io/connectomics/)**  
-> *Seven interconnected neuro-computational paradigms running client-side in your web browser with zero backend, zero build steps, and zero dependencies.*
+> *Nine interconnected neuro-computational paradigms running client-side in your web browser with zero backend, zero build steps, and zero dependencies.*
 
 Inspired by the landmark Google Research, Howard Hughes Medical Institute (HHMI Janelia), and FlyEM Consortium publication:  
 **"Sexual dimorphism in the complete connectome of the Drosophila male central nervous system"** (*Cell*, September 2026).
@@ -77,6 +77,16 @@ Inspired by the landmark Google Research, Howard Hughes Medical Institute (HHMI 
   </a>
 </p>
 
+<p align="center">
+  <b>CHRONOFLY</b> — Counterfactual Neural Twin Lab<br>
+  <a href="https://realgauravvyas.github.io/connectomics/chronofly/">Open CHRONOFLY</a>
+</p>
+
+<p align="center">
+  <b>ONEIRO</b> — Sleep-Replay Maze Observatory<br>
+  <a href="https://realgauravvyas.github.io/connectomics/oneiro/">Open ONEIRO</a>
+</p>
+
 ---
 
 ## 🌟 The Simulation Suite at a Glance
@@ -111,6 +121,8 @@ Full EM       LIF Spiking  3D Neuropils  Sparse RL      Gait Evolution Sensory L
 | [**FlySprint**](fly-sprint/) | Genetic Biomechanical Evolution | 10 $\to$ 6 $\to$ 4 MLP<br>94 weights / runner | Genetic algorithm evolving Central Pattern Generator (CPG) locomotion | **Track Competition:** 100m, 200m, 400m pacing & 10-barrier hurdles | [Launch FlySprint](https://realgauravvyas.github.io/connectomics/fly-sprint/) |
 | [**FLYMIND**](flymind/) | Sensory Electrophysiology Lab | 42 neuron classes<br>642 synaptic edges | Event-driven firing cascades + real-time oscilloscope & BFS tracer | **Multi-Modal Play:** Touch poke, odor conditioning, courtship acoustic synthesis | [Launch FLYMIND](https://realgauravvyas.github.io/connectomics/flymind/) |
 | [**FLYKICK**](flykick/) | Team Sports Connectome Sim | 10 flies $\times$ 11 neurons<br>110 active nodes | Autonomous multi-agent coordination + manual Central Complex hijack | **Neural Football:** 2 teams $\times$ 5 flies, live Brain Cam, charge kicks | [Launch FLYKICK](https://realgauravvyas.github.io/connectomics/flykick/) |
+| [**CHRONOFLY**](chronofly/) | Counterfactual Twin Experiment | 2 twins $\times$ 6 synthetic neurons<br>200 steps | Seeded recurrent LIF dynamics with a targeted N4 intervention | **Counterfactual Divergence:** identical inputs, control versus silenced/stimulated/modulated twin | [Launch CHRONOFLY](https://realgauravvyas.github.io/connectomics/chronofly/) |
+| [**ONEIRO**](oneiro/) | Synthetic Sleep-Replay Observatory | 20 place-tuned neurons<br>100-position maze | Deterministic Gaussian place fields, SWR-like events, Hebbian potentiation | **Offline Replay:** maze trajectory reactivation and learning-curve telemetry | [Launch ONEIRO](https://realgauravvyas.github.io/connectomics/oneiro/) |
 
 ---
 
@@ -161,10 +173,10 @@ python -m http.server 8000
 
 ### 🧪 Unified Verification Suite (Single Command)
 
-Run all 9 offline test suites across the complete 7-app simulator suite with a single command:
+Run all 11 automated checks across the complete 9-app simulator suite with a single command:
 
 ```bash
-# Run all tests across all 7 projects
+# Run all tests across all 9 projects
 npm test
 
 # or directly with Node:
@@ -190,6 +202,12 @@ cd flymind && npm test && cd ..
 
 # FLYKICK 16-check physics, AI match, and possession verification
 cd flykick && node tools/test-engine.js && cd ..
+
+# CHRONOFLY deterministic counterfactual-twin verification
+cd chronofly && node test/smoke.mjs && cd ..
+
+# ONEIRO deterministic sleep-replay verification
+cd oneiro && node test/smoke.mjs && cd ..
 ```
 
 ---
