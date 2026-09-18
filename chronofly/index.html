@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CHRONOFLY · Counterfactual Neural Twin Lab</title>
+  <meta name="description" content="Synthetic counterfactual neural twin simulation: observe divergence between control and intervened neural circuits under identical inputs." />
+  <meta property="og:title" content="CHRONOFLY · Counterfactual Neural Twin Lab" />
+  <meta property="og:description" content="Synthetic counterfactual neural twin simulation: observe divergence between control and intervened neural circuits under identical inputs." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <header class="site-header">
+      <div class="brand-group">
+        <div class="brand-icon">⚖️</div>
+        <div class="brand-titles">
+          <h1>CHRONOFLY</h1>
+          <span>Counterfactual Neural Twin Lab</span>
+        </div>
+      </div>
+      <div class="header-links">
+        <a href="https://github.com/realgauravvyas/connectomics" class="badge-link" target="_blank" rel="noopener">
+          GitHub
+        </a>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="eyebrow">
+        <span class="dot"></span> Deterministic Twin Experiments · Zero Backend
+      </div>
+      <h2>
+        Identical Twins,<br>
+        <span>Different Destinies.</span>
+      </h2>
+      <p class="lead">
+        Two identical synthetic neural circuits driven by identical inputs. Watch how a targeted intervention—silencing, stimulation, or modulation—causes divergence in real time. Pure deterministic dynamics, seeded for reproducibility.
+      </p>
+
+      <div class="metrics-row">
+        <div class="metric-pill">
+          <b>2</b>
+          <span>Twin Circuits</span>
+        </div>
+        <div class="metric-pill">
+          <b>1</b>
+          <span>Intervention Axis</span>
+        </div>
+        <div class="metric-pill">
+          <b>Full</b>
+          <span>Reproducibility</span>
+        </div>
+        <div class="metric-pill">
+          <b>Seeded</b>
+          <span>Deterministic</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="experiment-controls">
+      <div class="card-top">
+        <h3 class="card-name">Experiment</h3>
+      </div>
+      <div style="flex: 1; min-width: 0;">
+        <label style="display:block;margin-bottom:6px;font-size:12px;color:var(--text-muted);">Seed</label>
+        <input id="seed" type="number" min="0" step="1" value="42" style="width:100%;padding:6px;font-size:13px;border-radius:6px;border:1px solid var(--border-subtle);background:var(--bg-surface);color:#fff;" />
+      </div>
+      <div style="flex: 1; min-width: 0;">
+        <label style="display:block;margin-bottom:6px;font-size:12px;color:var(--text-muted);">Intervention</label>
+        <select id="intervention" style="width:100%;padding:6px;font-size:13px;border-radius:6px;border:1px solid var(--border-subtle);background:var(--bg-surface);color:#fff;">
+          <option value="none">None (identical twins)</option>
+          <option value="silence">Silence neuron N4</option>
+          <option value="stimulate">Stimulate neuron N4</option>
+          <option value="modulate">Modulate N4 gain ×1.5</option>
+        </select>
+      </div>
+      <button id="runBtn" class="btn-launch btn-purple" style="width:100%;margin-top:12px;">
+        Run Counterfactual Experiment
+      </button>
+    </section>
+
+    <section class="results">
+      <div class="card-top">
+        <h3 class="card-name">Trajectory Divergence</h3>
+      </div>
+      <canvas id="canvas" width="600" height="400"></canvas>
+      <pre id="telemetry" style="margin-top:12px;padding:12px;background:var(--bg-surface);border-radius:8px;color:#fff;font-family:var(--font-mono);font-size:12px;line-height:1.4;"></pre>
+    </section>
+  </div>
+
+  <script type="module" src="main.js"></script>
+</body>
+</html>

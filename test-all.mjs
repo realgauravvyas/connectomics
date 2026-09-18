@@ -74,6 +74,18 @@ const suites = [
     cmd: process.execPath,
     args: ['tools/test-engine.js'],
   },
+  {
+    name: 'CHRONOFLY (Counterfactual Neural Twin Syntax)',
+    cwd: resolve(__dirname, 'chronofly'),
+    cmd: process.execPath,
+    args: ['--check'],
+  },
+  {
+    name: 'ONEIRO (Sleep‑Replay Syntax)',
+    cwd: resolve(__dirname, 'oneiro'),
+    cmd: process.execPath,
+    args: ['--check'],
+  },
 ];
 
 console.log('\n🪰⚡ CONNECTOMICS SUITE — Unified Automated Verification\n' + '='.repeat(60));
