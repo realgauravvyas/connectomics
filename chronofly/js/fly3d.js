@@ -1,8 +1,8 @@
 const T = window.THREE;
 
-const _dir = new T.Vector3();
-const _UP = new T.Vector3(0, 1, 0);
-const UNIT_CYL = new T.CylinderGeometry(1, 1, 1, 6);
+const _dir = T ? new T.Vector3() : null;
+const _UP = T ? new T.Vector3(0, 1, 0) : null;
+const UNIT_CYL = T ? new T.CylinderGeometry(1, 1, 1, 6) : null;
 
 function seg(mesh, ax, ay, az, bx, by, bz, r) {
   _dir.set(bx - ax, by - ay, bz - az);

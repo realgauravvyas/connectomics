@@ -24,21 +24,23 @@ export function createAudio() {
   }
 
   function start() {
-    if (started || !ensure()) return;
-    started = true;
+    if (!ensure()) return;
+    if (!started) {
+      started = true;
+      buzzOsc = ctx.createOscillator();
+      buzzOsc.type = 'sawtooth';
+      buzzOsc.frequency.value = 190;
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.value = 900;
+      buzzGain = ctx.createGain();
+      buzzGain.gain.value = 0;
+      buzzOsc.connect(filter);
+      filter.connect(buzzGain);
+      buzzGain.connect(master);
+      buzzOsc.start();
+    }
     if (ctx.state === 'suspended') ctx.resume();
-    buzzOsc = ctx.createOscillator();
-    buzzOsc.type = 'sawtooth';
-    buzzOsc.frequency.value = 190;
-    const filter = ctx.createBiquadFilter();
-    filter.type = 'lowpass';
-    filter.frequency.value = 900;
-    buzzGain = ctx.createGain();
-    buzzGain.gain.value = 0;
-    buzzOsc.connect(filter);
-    filter.connect(buzzGain);
-    buzzGain.connect(master);
-    buzzOsc.start();
   }
 
   function setBuzz(level, freq) {

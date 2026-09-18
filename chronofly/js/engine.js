@@ -369,7 +369,7 @@ function updateTelemetry(result) {
 
 function handleRun() {
   audio.start();
-  const seed = Math.max(0, parseInt(seedInput.value, 10) || 42);
+  const seed = Math.min(0xffffffff, Math.max(0, parseInt(seedInput.value, 10) || 42));
   const intervention = interventionSelect.value;
   current = runTwins(seed, intervention, MODULATE_GAIN);
   setDebug(current);
@@ -380,12 +380,13 @@ function handleRun() {
 
 function fitPlot() {
   canvas.width = Math.max(320, canvas.offsetWidth || 600);
-  canvas.height = 400;
+  canvas.height = Math.max(300, canvas.offsetHeight || 400);
   render(current.tracesA, current.tracesB);
 }
 
 runBtn.addEventListener('click', handleRun);
 playBtn.addEventListener('click', () => {
+  if (!webglOK) return;
   audio.start();
   if (!flight) {
     startFlight(current);
@@ -395,6 +396,7 @@ playBtn.addEventListener('click', () => {
   else resumeFlight();
 });
 restartBtn.addEventListener('click', () => {
+  if (!webglOK) return;
   audio.start();
   startFlight(current);
 });

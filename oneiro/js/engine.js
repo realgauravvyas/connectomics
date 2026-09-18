@@ -380,7 +380,7 @@ function updateTelemetry(result, speed) {
 function handleRun() {
   audio.start();
   audio.ui();
-  const seed = Math.max(0, parseInt(seedInput.value, 10) || 123);
+  const seed = Math.min(0xffffffff, Math.max(0, parseInt(seedInput.value, 10) || 123));
   const speed = speedSelect.value;
   current = runReplay(seed);
   setDebug(current);
@@ -391,12 +391,13 @@ function handleRun() {
 
 function fitPanels() {
   canvas.width = Math.max(320, canvas.offsetWidth || 900);
-  canvas.height = 440;
+  canvas.height = Math.max(320, canvas.offsetHeight || 440);
   render(current, speedSelect.value);
 }
 
 runBtn.addEventListener('click', handleRun);
 playBtn.addEventListener('click', () => {
+  if (!webglOK) return;
   audio.start();
   if (!anim) {
     startFlight();
@@ -406,6 +407,7 @@ playBtn.addEventListener('click', () => {
   else resumeFlight();
 });
 restartBtn.addEventListener('click', () => {
+  if (!webglOK) return;
   audio.start();
   startFlight();
 });
