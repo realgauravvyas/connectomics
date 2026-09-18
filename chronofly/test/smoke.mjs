@@ -1,5 +1,12 @@
 import assert from 'node:assert/strict';
+import { statSync } from 'node:fs';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { ARENA_H, ARENA_W, divergence, flyPath, mean, runTwins } from '../sim.js';
+
+const root = dirname(dirname(fileURLToPath(import.meta.url)));
+assert.ok(statSync(resolve(root, 'vendor/three.min.js')).size > 100000, 'vendored three.js must be present');
+assert.ok(statSync(resolve(root, 'fly3d.js')).size > 1000, 'fly3d.js must be present');
 
 const first = runTwins(42, 'none');
 const repeat = runTwins(42, 'none');

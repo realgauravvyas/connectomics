@@ -51,7 +51,7 @@ Or drag `index.html` into any modern browser (Chrome, Firefox, Safari, Edge).
 ## Outputs
 
 - **Trajectory plot**: Solid line = control (twin A), dashed line = intervened (twin B). Both share the same time axis and y‑scale.
-- **Twin-flight arena**: Two animated flies race toward the odor plume on the right. Their headings are steered step-by-step by their own N4 voltages, with fading trails, so the treated twin visibly peels away from the control as divergence grows. Wing-buzz pitch tracks twin separation.
+- **3D twin-flight arena (WebGL)**: Two realistic 3D flies race down glowing lanes toward a pulsing odor plume. Their headings are steered step-by-step by their own N4 voltages, with additive trails and a live separation link, so the treated twin visibly peels away from the control as divergence grows. Wing-buzz pitch tracks twin separation. The camera drifts with the pack.
 - **Telemetry panel** below the plot shows:
   - Seed number
   - Selected intervention
@@ -89,7 +89,8 @@ The source code (`sim.js`, `engine.js`, `main.js`) is pure JavaScript with no ex
 | `index.html` | Page structure, hero, controls, canvas, telemetry |
 | `style.css` | Suite-aligned dark portal styling with a purple/pink accent |
 | `sim.js` | Deterministic, DOM-free twin-simulation core (LIF dynamics, N4 flight-path mapping) used by both the page and tests |
-| `fly.js` | Neon top-down fly renderer (flapping wings, holo body) shared by the arena |
+| `fly3d.js` | 3D neon fly model (body, compound eyes, flapping wings, glow disc) plus trail helper |
+| `vendor/three.min.js` | Vendored WebGL library, same approach as fly-sprint/fly-gambit — zero npm dependencies |
 | `audio.js` | Procedural WebAudio wing-buzz and divergence blips — zero audio files |
 | `engine.js` | Browser rendering, flight animation, controls, telemetry, and debug state |
 | `main.js` | Entrypoint, UI wiring, global debug API |

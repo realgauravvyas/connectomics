@@ -48,7 +48,7 @@ Or drag `index.html` into any modern browser.
 
 ## Outputs
 
-- **Live maze flight**: An animated fly runs the 100-position corridor with a fading motion trail and wing-buzz that brightens during replays. Gold expanding rings and a chime mark each SWR event as the fly replays that maze step.
+- **Live 3D maze flight (WebGL)**: A realistic 3D fly runs the 100-position corridor — flapping wings, tucked legs, glow disc, and motion trail — while the camera tracks it past glowing place-field markers. Gold expanding 3D rings, a light flash, and a chime mark each SWR event. Wing-buzz brightens during replays.
 - **Left panel (heat map)**: Hippocampal activity normalized within the displayed window; brighter cells mean stronger relative firing. Gold ticks mark SWR events.
 - **Right panel (synaptic plot)**: Accumulated Hebbian potentiation over 300 steps, showing the gradual learning curve.
 - **Telemetry panel** below the plot shows:
@@ -88,7 +88,8 @@ The source code (`sim.js`, `engine.js`, `main.js`) is pure JavaScript — no npm
 | `index.html` | Page structure, hero, controls, two‑panel canvas, telemetry |
 | `style.css` | Suite-aligned dark portal styling with an emerald/cyan accent |
 | `sim.js` | Deterministic, DOM-free replay core (maze walk, SWR events, Hebbian update) used by both the page and tests |
-| `fly.js` | Neon top-down fly renderer (flapping wings, holo body) shared by the maze flight |
+| `fly3d.js` | 3D neon fly model (body, compound eyes, flapping wings, glow disc) plus trail helper |
+| `vendor/three.min.js` | Vendored WebGL library, same approach as fly-sprint/fly-gambit — zero npm dependencies |
 | `audio.js` | Procedural WebAudio wing-buzz, SWR chimes, and UI clicks — zero audio files |
 | `engine.js` | Browser rendering, flight animation, controls, telemetry, and debug state |
 | `main.js` | Entrypoint, UI wiring, global debug API |
