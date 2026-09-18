@@ -110,6 +110,39 @@ export function divergence(a, b) {
   return sum / a.length;
 }
 
+export const ARENA_W = 100;
+export const ARENA_H = 100;
+
+function clamp(v, lo, hi) {
+  return Math.min(hi, Math.max(lo, v));
+}
+
+export function flyPath(trace) {
+  if (!Array.isArray(trace) || trace.length === 0) {
+    throw new Error('trace must be a non-empty array');
+  }
+  const path = [];
+  let x = 8;
+  let y = ARENA_H / 2;
+  let heading = 0;
+  for (const v of trace) {
+    if (!Number.isFinite(v)) throw new Error('trace must contain only finite numbers');
+    const drive = clamp((v + 0.5) * 0.35, -0.6, 0.9);
+    heading += clamp((v + 0.5) * 0.08, -0.3, 0.3);
+    const speed = 0.9 * (1 + drive);
+    x += Math.cos(heading) * speed;
+    y += Math.sin(heading) * speed;
+    if (x < 0) x += ARENA_W;
+    if (x >= ARENA_W) x -= ARENA_W;
+    if (y < 8 || y > ARENA_H - 8) {
+      heading = -heading;
+      y = clamp(y, 8, ARENA_H - 8);
+    }
+    path.push({ x, y, heading, speed: Math.abs(speed) });
+  }
+  return path;
+}
+
 export function mean(values) {
   if (!Array.isArray(values) || values.length === 0) {
     throw new Error('values must be a non-empty array');

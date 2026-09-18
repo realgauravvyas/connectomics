@@ -1,19 +1,32 @@
-import { MODULATE_GAIN, STEPS, runTwins } from './sim.js';
+import { ARENA_H, ARENA_W, MODULATE_GAIN, STEPS, flyPath, runTwins } from './sim.js';
+import { drawFly } from './fly.js';
+import { createAudio } from './audio.js';
 
 const CONTROL_COLOR = '#a855f7';
 const TREATED_COLOR = '#ff266d';
+const CONTROL_RGB = '168,85,247';
+const TREATED_RGB = '255,38,109';
 const GRID_COLOR = 'rgba(255, 255, 255, 0.06)';
 const AXIS_COLOR = 'rgba(255, 255, 255, 0.16)';
 const LABEL_COLOR = '#8b9bb4';
 
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
+const arena = document.getElementById('arena');
+const actx = arena.getContext('2d');
 const telemetry = document.getElementById('telemetry');
+const caption = document.getElementById('flight-caption');
 const runBtn = document.getElementById('runBtn');
+const playBtn = document.getElementById('playBtn');
+const pauseBtn = document.getElementById('pauseBtn');
+const restartBtn = document.getElementById('restartBtn');
+const soundBtn = document.getElementById('soundBtn');
 const seedInput = document.getElementById('seed');
 const interventionSelect = document.getElementById('intervention');
 
+const audio = createAudio();
 let current = runTwins(42, 'none', MODULATE_GAIN);
+let flight = null;
 
 function setDebug(result) {
   window.CHRONOFLY = window.CHRONOFLY || {};
@@ -22,12 +35,20 @@ function setDebug(result) {
   window.CHRONOFLY._lastResult = result;
 }
 
-function resizeCanvas() {
-  canvas.width = Math.max(320, canvas.offsetWidth || 600);
-  canvas.height = Math.max(260, canvas.offsetHeight || 400);
-  if (current) render(current.tracesA, current.tracesB);
+function fitCanvas(el, minW, minH) {
+  const w = Math.max(minW, el.offsetWidth || minW);
+  const h = Math.max(minH, el.offsetHeight || minH);
+  el.width = w;
+  el.height = h;
 }
-window.addEventListener('resize', resizeCanvas);
+
+function resizeAll() {
+  fitCanvas(canvas, 320, 400);
+  fitCanvas(arena, 320, 420);
+  render(current.tracesA, current.tracesB);
+  if (flight) drawArena(performance.now());
+}
+window.addEventListener('resize', resizeAll);
 
 function render(tracesA, tracesB) {
   const width = canvas.width;
@@ -105,6 +126,142 @@ function render(tracesA, tracesB) {
   ctx.fillText(`0–${STEPS} steps · neuron N4`, margin.l + 184, 22);
 }
 
+function toArena(p) {
+  return {
+    x: 24 + (p.x / ARENA_W) * (arena.width - 48),
+    y: 24 + (p.y / ARENA_H) * (arena.height - 48)
+  };
+}
+
+function startFlight(result) {
+  stopFlight();
+  flight = {
+    pathA: flyPath(result.tracesA),
+    pathB: flyPath(result.tracesB),
+    frame: 0,
+    playing: true,
+    raf: 0,
+    ripples: [],
+    lastBlip: 0
+  };
+  const tick = (now) => {
+    if (!flight || !flight.playing) return;
+    flight.frame = Math.min(STEPS - 1, flight.frame + 2);
+    drawArena(now);
+    if (flight.frame >= STEPS - 1) {
+      flight.playing = false;
+      playBtn.textContent = 'Play Flight';
+      return;
+    }
+    flight.raf = requestAnimationFrame(tick);
+  };
+  flight.raf = requestAnimationFrame(tick);
+}
+
+function stopFlight() {
+  if (flight && flight.raf) cancelAnimationFrame(flight.raf);
+  flight = null;
+}
+
+function pauseFlight() {
+  if (!flight || !flight.playing) return;
+  flight.playing = false;
+  cancelAnimationFrame(flight.raf);
+  playBtn.textContent = 'Play Flight';
+  audio.setBuzz(0, 190);
+}
+
+function resumeFlight() {
+  if (!flight || flight.playing) return;
+  flight.playing = true;
+  playBtn.textContent = 'Pause Flight';
+  const tick = (now) => {
+    if (!flight || !flight.playing) return;
+    flight.frame = Math.min(STEPS - 1, flight.frame + 2);
+    drawArena(now);
+    if (flight.frame >= STEPS - 1) {
+      flight.playing = false;
+      playBtn.textContent = 'Play Flight';
+      return;
+    }
+    flight.raf = requestAnimationFrame(tick);
+  };
+  flight.raf = requestAnimationFrame(tick);
+}
+
+function drawTrail(path, frame, rgb) {
+  for (let i = 0; i <= frame; i += 1) {
+    const a = 0.08 + 0.5 * (i / Math.max(1, frame));
+    const p = toArena(path[i]);
+    actx.fillStyle = `rgba(${rgb},${a.toFixed(3)})`;
+    actx.beginPath();
+    actx.arc(p.x, p.y, 1.6 + 1.4 * (i / STEPS), 0, 7);
+    actx.fill();
+  }
+}
+
+function drawArena(now) {
+  const w = arena.width;
+  const h = arena.height;
+  actx.fillStyle = '#0a0e1a';
+  actx.fillRect(0, 0, w, h);
+
+  const plume = actx.createRadialGradient(w - 40, h / 2, 8, w - 40, h / 2, w * 0.45);
+  plume.addColorStop(0, 'rgba(255,183,0,0.20)');
+  plume.addColorStop(1, 'rgba(255,183,0,0)');
+  actx.fillStyle = plume;
+  actx.fillRect(0, 0, w, h);
+
+  actx.strokeStyle = GRID_COLOR;
+  actx.lineWidth = 1;
+  for (let x = 0; x < w; x += 44) {
+    actx.beginPath();
+    actx.moveTo(x, 0);
+    actx.lineTo(x, h);
+    actx.stroke();
+  }
+  for (let y = 0; y < h; y += 44) {
+    actx.beginPath();
+    actx.moveTo(0, y);
+    actx.lineTo(w, y);
+    actx.stroke();
+  }
+
+  actx.strokeStyle = 'rgba(255,183,0,0.65)';
+  actx.lineWidth = 2;
+  actx.beginPath();
+  actx.arc(w - 44, h / 2, 16 + 3 * Math.sin(now / 300), 0, 7);
+  actx.stroke();
+  actx.fillStyle = LABEL_COLOR;
+  actx.font = '11px "JetBrains Mono", monospace';
+  actx.fillText('ODOR', w - 66, h / 2 - 26);
+
+  const f = flight.frame;
+  drawTrail(flight.pathA, f, CONTROL_RGB);
+  drawTrail(flight.pathB, f, TREATED_RGB);
+
+  const a = toArena(flight.pathA[f]);
+  const b = toArena(flight.pathB[f]);
+  drawFly(actx, a.x, a.y, flight.pathA[f].heading, 1.0, CONTROL_RGB, now, true);
+  drawFly(actx, b.x, b.y, flight.pathB[f].heading, 1.0, TREATED_RGB, now, true);
+
+  actx.fillStyle = CONTROL_COLOR;
+  actx.fillText('CONTROL', 14, 22);
+  actx.fillStyle = TREATED_COLOR;
+  actx.fillText('TREATED', 104, 22);
+
+  const da = flight.pathA[f];
+  const db = flight.pathB[f];
+  const gap = Math.hypot(da.x - db.x, da.y - db.y);
+  const buzz = Math.min(1, gap / 40);
+  audio.setBuzz(0.25 + buzz * 0.75, 175 + buzz * 70);
+  if (gap > 12 && now - flight.lastBlip > 600) {
+    flight.lastBlip = now;
+    audio.blip(660 + Math.min(660, gap * 12));
+  }
+  caption.textContent = `Flight step ${f + 1}/${STEPS} · twin separation ${gap.toFixed(1)} arena units`;
+}
+
 function updateTelemetry(result) {
   telemetry.textContent =
     `Seed: ${result.seed}\n` +
@@ -115,14 +272,39 @@ function updateTelemetry(result) {
 }
 
 function handleRun() {
+  audio.start();
   const seed = Math.max(0, parseInt(seedInput.value, 10) || 42);
   const intervention = interventionSelect.value;
   current = runTwins(seed, intervention, MODULATE_GAIN);
   setDebug(current);
   render(current.tracesA, current.tracesB);
   updateTelemetry(current);
+  playBtn.textContent = 'Pause Flight';
+  startFlight(current);
 }
 
 runBtn.addEventListener('click', handleRun);
-resizeCanvas();
+playBtn.addEventListener('click', () => {
+  audio.start();
+  if (!flight) {
+    playBtn.textContent = 'Pause Flight';
+    startFlight(current);
+    return;
+  }
+  if (flight.playing) pauseFlight();
+  else resumeFlight();
+});
+pauseBtn.addEventListener('click', pauseFlight);
+restartBtn.addEventListener('click', () => {
+  audio.start();
+  playBtn.textContent = 'Pause Flight';
+  startFlight(current);
+});
+soundBtn.addEventListener('click', () => {
+  audio.start();
+  const on = audio.toggle();
+  soundBtn.textContent = on ? 'Sound: On' : 'Sound: Off';
+});
+
+resizeAll();
 handleRun();

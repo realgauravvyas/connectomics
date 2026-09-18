@@ -39,13 +39,16 @@ Or drag `index.html` into any modern browser.
 | Control | Description |
 |---|---|
 | **Seed** | Integer ≥ 0. Fixes the deterministic random weights, place fields, and position walk. Use the same number to reproduce an experiment. |
-| **Replay Speed** | Controls plot compression only: `1x` shows the latest 80 steps, `5x` samples the latest 200 steps, and `20x` samples all 300 steps. |
-| **Run Experiment** | Launches a 300‑step simulation, flags SWR events, updates synaptic weights, and renders two panels. |
+| **Replay Speed** | Controls plot compression and flight playback rate: `1x` shows the latest 80 steps, `5x` samples the latest 200 steps, and `20x` samples all 300 steps. |
+| **Run Experiment** | Launches a 300‑step simulation, flags SWR events, updates synaptic weights, renders the science panels, and starts the maze-flight replay. |
+| **Play / Pause / Restart** | Controls the animated maze-flight replay (the simulation itself always runs to completion instantly). |
+| **Sound** | Toggles the procedural wing-buzz and SWR chimes. Audio starts on your first click (Run/Play/Sound), following browser autoplay rules. |
 
 ---
 
 ## Outputs
 
+- **Live maze flight**: An animated fly runs the 100-position corridor with a fading motion trail and wing-buzz that brightens during replays. Gold expanding rings and a chime mark each SWR event as the fly replays that maze step.
 - **Left panel (heat map)**: Hippocampal activity normalized within the displayed window; brighter cells mean stronger relative firing. Gold ticks mark SWR events.
 - **Right panel (synaptic plot)**: Accumulated Hebbian potentiation over 300 steps, showing the gradual learning curve.
 - **Telemetry panel** below the plot shows:
@@ -68,11 +71,11 @@ Or drag `index.html` into any modern browser.
 
 ## Reproducibility
 
-Every experiment is completely reproducible given the same seed and speed. To cite or share a result:
+Every experiment is completely reproducible given the same seed. To cite or share a result:
 
 1. Note the **Seed** value.
-2. Record the **Replay Speed**.
-3. The SWR event timestamps, weight evolution, and heat‑map colours are deterministic functions of (seed, speed).
+2. Record the **Replay Speed** (it affects only playback rate and plot compression, not the simulation).
+3. The maze walk, SWR event timestamps, weight evolution, and heat‑map colours are deterministic functions of the seed.
 
 The source code (`sim.js`, `engine.js`, `main.js`) is pure JavaScript — no npm packages, no build step. Copy the `oneiro/` directory anywhere and it will run offline.
 
@@ -84,8 +87,10 @@ The source code (`sim.js`, `engine.js`, `main.js`) is pure JavaScript — no npm
 |---|---|
 | `index.html` | Page structure, hero, controls, two‑panel canvas, telemetry |
 | `style.css` | Suite-aligned dark portal styling with an emerald/cyan accent |
-| `sim.js` | Deterministic, DOM-free replay core used by both the page and tests |
-| `engine.js` | Browser rendering, controls, telemetry, and debug state |
+| `sim.js` | Deterministic, DOM-free replay core (maze walk, SWR events, Hebbian update) used by both the page and tests |
+| `fly.js` | Neon top-down fly renderer (flapping wings, holo body) shared by the maze flight |
+| `audio.js` | Procedural WebAudio wing-buzz, SWR chimes, and UI clicks — zero audio files |
+| `engine.js` | Browser rendering, flight animation, controls, telemetry, and debug state |
 | `main.js` | Entrypoint, UI wiring, global debug API |
 | `test/smoke.mjs` | Determinism, event-range, monotonic-learning, and validation checks |
 | `README.md` | This file |

@@ -334,13 +334,65 @@ header.site-header {
   color: #fff;
 }
 
-#canvas {
+#canvas,
+#flight {
   display: block;
   width: 100%;
-  height: 440px;
   background: #050a12;
   border: 1px solid var(--border-subtle);
   border-radius: 12px;
+}
+
+#canvas { height: 440px; }
+#flight { height: 220px; }
+
+.canvas-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.canvas-grid figure { margin: 0; }
+
+.canvas-grid figcaption {
+  margin-top: 8px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--text-muted);
+}
+
+.flight-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 16px 0 4px;
+}
+
+.ghost-btn {
+  padding: 9px 16px;
+  border-radius: 9px;
+  border: 1px solid var(--border-glow);
+  background: rgba(61, 220, 151, 0.1);
+  color: #8df0c4;
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ghost-btn:hover {
+  background: rgba(61, 220, 151, 0.22);
+  transform: translateY(-1px);
+}
+
+.caption {
+  margin-top: 10px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-muted);
 }
 
 #telemetry {

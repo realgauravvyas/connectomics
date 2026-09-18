@@ -73,11 +73,13 @@ export function runReplay(seed) {
   const cortical = [];
   const replayEvents = [];
   const synapticEvolution = [];
+  const positions = [];
   let accumulated = 0;
 
   for (let t = 0; t < TOTAL_STEPS; t += 1) {
     const base = (t * 7) % MAZE_LENGTH;
     const position = Math.max(0, Math.min(MAZE_LENGTH - 1, base + Math.floor(random() * 3) - 1));
+    positions.push(position);
 
     let total = 0;
     for (let i = 0; i < NEURON_COUNT; i += 1) total += activation(fields, i, position);
@@ -101,6 +103,7 @@ export function runReplay(seed) {
     seed,
     hippocampal,
     cortical,
+    positions,
     replayEvents,
     synapticEvolution,
     weights,

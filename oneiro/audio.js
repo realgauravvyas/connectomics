@@ -1,0 +1,108 @@
+export function createAudio() {
+  let ctx = null;
+  let master = null;
+  let buzzOsc = null;
+  let buzzGain = null;
+  let started = false;
+  let on = true;
+  let lastChime = 0;
+
+  function ensure() {
+    if (ctx) return true;
+    try {
+      ctx = new (window.AudioContext || window.webkitAudioContext)();
+    } catch (e) {
+      return false;
+    }
+    master = ctx.createGain();
+    master.gain.value = 0.5;
+    const comp = ctx.createDynamicsCompressor();
+    comp.threshold.value = -18;
+    comp.ratio.value = 6;
+    master.connect(comp);
+    comp.connect(ctx.destination);
+    return true;
+  }
+
+  function start() {
+    if (started || !ensure()) return;
+    started = true;
+    if (ctx.state === 'suspended') ctx.resume();
+    buzzOsc = ctx.createOscillator();
+    buzzOsc.type = 'sawtooth';
+    buzzOsc.frequency.value = 190;
+    const filter = ctx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.value = 900;
+    buzzGain = ctx.createGain();
+    buzzGain.gain.value = 0;
+    buzzOsc.connect(filter);
+    filter.connect(buzzGain);
+    buzzGain.connect(master);
+    buzzOsc.start();
+  }
+
+  function setBuzz(level, freq) {
+    if (!ctx || !buzzGain || !on) return;
+    const target = 0.02 + 0.06 * Math.min(1, Math.max(0, level));
+    buzzGain.gain.setTargetAtTime(target, ctx.currentTime, 0.15);
+    buzzOsc.frequency.setTargetAtTime(freq, ctx.currentTime, 0.3);
+  }
+
+  function chime() {
+    if (!ctx || !on) return;
+    const now = performance.now();
+    if (now - lastChime < 500) return;
+    lastChime = now;
+    const t = ctx.currentTime;
+    [880, 1318].forEach((f, i) => {
+      const o = ctx.createOscillator();
+      const g = ctx.createGain();
+      o.type = 'sine';
+      o.frequency.value = f;
+      const st = t + i * 0.09;
+      g.gain.setValueAtTime(0.09, st);
+      g.gain.exponentialRampToValueAtTime(0.0001, st + 0.4);
+      o.connect(g);
+      g.connect(master);
+      o.start(st);
+      o.stop(st + 0.45);
+    });
+  }
+
+  function ui() {
+    if (!ctx || !on) return;
+    const t = ctx.currentTime;
+    const o = ctx.createOscillator();
+    const g = ctx.createGain();
+    o.type = 'triangle';
+    o.frequency.setValueAtTime(520, t);
+    o.frequency.exponentialRampToValueAtTime(700, t + 0.06);
+    g.gain.setValueAtTime(0.06, t);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.1);
+    o.connect(g);
+    g.connect(master);
+    o.start(t);
+    o.stop(t + 0.11);
+  }
+
+  function toggle() {
+    on = !on;
+    if (ctx && buzzGain) buzzGain.gain.setTargetAtTime(0, ctx.currentTime, 0.1);
+    return on;
+  }
+
+  return {
+    start,
+    setBuzz,
+    chime,
+    ui,
+    toggle,
+    get on() {
+      return on;
+    },
+    get started() {
+      return started;
+    }
+  };
+}

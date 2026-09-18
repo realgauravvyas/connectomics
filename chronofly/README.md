@@ -42,13 +42,16 @@ Or drag `index.html` into any modern browser (Chrome, Firefox, Safari, Edge).
 |---|---|
 | **Seed** | Integer ≥ 0. Fixes the deterministic random weights and initial states. Use the same number to reproduce an experiment. |
 | **Intervention** | Choose from: `none` (identical twins), `silence`, `stimulate`, or `modulate`. |
-| **Run Experiment** | Launches a 200-step simulation and renders the voltage trace of neuron N4 for both twins, plus the mean‑squared divergence. |
+| **Run Experiment** | Launches a 200-step simulation and renders the voltage trace of neuron N4 for both twins, plus the mean‑squared divergence. Automatically starts the twin-flight replay. |
+| **Play / Pause / Restart** | Controls the animated twin-flight replay (the simulation itself always runs to completion instantly). |
+| **Sound** | Toggles the procedural wing-buzz and divergence blips. Audio starts on your first click (Run/Play/Sound), following browser autoplay rules. |
 
 ---
 
 ## Outputs
 
 - **Trajectory plot**: Solid line = control (twin A), dashed line = intervened (twin B). Both share the same time axis and y‑scale.
+- **Twin-flight arena**: Two animated flies race toward the odor plume on the right. Their headings are steered step-by-step by their own N4 voltages, with fading trails, so the treated twin visibly peels away from the control as divergence grows. Wing-buzz pitch tracks twin separation.
 - **Telemetry panel** below the plot shows:
   - Seed number
   - Selected intervention
@@ -85,8 +88,10 @@ The source code (`sim.js`, `engine.js`, `main.js`) is pure JavaScript with no ex
 |---|---|
 | `index.html` | Page structure, hero, controls, canvas, telemetry |
 | `style.css` | Suite-aligned dark portal styling with a purple/pink accent |
-| `sim.js` | Deterministic, DOM-free twin-simulation core used by both the page and tests |
-| `engine.js` | Browser rendering, controls, telemetry, and debug state |
+| `sim.js` | Deterministic, DOM-free twin-simulation core (LIF dynamics, N4 flight-path mapping) used by both the page and tests |
+| `fly.js` | Neon top-down fly renderer (flapping wings, holo body) shared by the arena |
+| `audio.js` | Procedural WebAudio wing-buzz and divergence blips — zero audio files |
+| `engine.js` | Browser rendering, flight animation, controls, telemetry, and debug state |
 | `main.js` | Entrypoint, UI wiring, global debug API |
 | `test/smoke.mjs` | Determinism, intervention-effect, isolation, and validation checks |
 | `README.md` | This file |

@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { divergence, mean, runTwins } from '../sim.js';
+import { ARENA_H, ARENA_W, divergence, flyPath, mean, runTwins } from '../sim.js';
 
 const first = runTwins(42, 'none');
 const repeat = runTwins(42, 'none');
@@ -21,6 +21,21 @@ snapshot.tracesB[0] = 999;
 const fresh = runTwins(7, 'stimulate');
 assert.notEqual(fresh.tracesB[0], 999);
 assert.deepEqual(snapshot.tracesA, fresh.tracesA);
+
+const nonePaths = flyPath(first.tracesA);
+const nonePathsAgain = flyPath(runTwins(42, 'none').tracesA);
+assert.deepEqual(nonePaths, nonePathsAgain);
+assert.equal(nonePaths.length, 200);
+for (const p of nonePaths) {
+  assert.ok(p.x >= 0 && p.x < ARENA_W);
+  assert.ok(p.y >= 0 && p.y <= ARENA_H);
+  assert.ok(Number.isFinite(p.heading));
+}
+const stimPaths = flyPath(runTwins(42, 'stimulate').tracesB);
+const lastNone = nonePaths[nonePaths.length - 1];
+const lastStim = stimPaths[stimPaths.length - 1];
+assert.ok(Math.abs(lastNone.x - lastStim.x) + Math.abs(lastNone.y - lastStim.y) > 1e-6);
+assert.throws(() => flyPath([]), /non-empty/);
 
 assert.throws(() => runTwins(-1, 'none'), /seed/);
 assert.throws(() => runTwins(42, 'unknown'), /intervention/);

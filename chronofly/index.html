@@ -89,7 +89,23 @@
       <div class="card-top">
         <h3 class="card-name">Trajectory Divergence</h3>
       </div>
-      <canvas id="canvas" width="900" height="400" aria-label="Control and treated twin voltage trajectories"></canvas>
+      <div class="canvas-grid">
+        <figure>
+          <canvas id="canvas" width="900" height="400" aria-label="Control and treated twin voltage trajectories"></canvas>
+          <figcaption>Neuron N4 voltage · solid control vs dashed treated</figcaption>
+        </figure>
+        <figure>
+          <canvas id="arena" width="900" height="420" aria-label="Twin flies racing toward the odor source"></canvas>
+          <figcaption>Live twin flight · purple control vs pink treated, racing for the odor</figcaption>
+        </figure>
+      </div>
+      <div class="flight-controls">
+        <button id="playBtn" class="ghost-btn" type="button">Pause Flight</button>
+        <button id="pauseBtn" class="ghost-btn" type="button">Pause</button>
+        <button id="restartBtn" class="ghost-btn" type="button">Restart</button>
+        <button id="soundBtn" class="ghost-btn" type="button">Sound: On</button>
+      </div>
+      <p id="flight-caption" class="caption" aria-live="polite"></p>
       <pre id="telemetry" aria-live="polite"></pre>
     </section>
 

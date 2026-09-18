@@ -1,14 +1,20 @@
 import assert from 'node:assert/strict';
-import { TOTAL_STEPS, runReplay } from '../sim.js';
+import { MAZE_LENGTH, TOTAL_STEPS, runReplay } from '../sim.js';
 
 const first = runReplay(123);
 const repeat = runReplay(123);
 assert.deepEqual(first.replayEvents, repeat.replayEvents);
 assert.deepEqual(first.synapticEvolution, repeat.synapticEvolution);
+assert.deepEqual(first.positions, repeat.positions);
 assert.equal(first.meanWeight, repeat.meanWeight);
 assert.equal(first.hippocampal.length, TOTAL_STEPS);
 assert.equal(first.cortical.length, TOTAL_STEPS);
 assert.equal(first.synapticEvolution.length, TOTAL_STEPS);
+assert.equal(first.positions.length, TOTAL_STEPS);
+for (const pos of first.positions) {
+  assert.ok(Number.isInteger(pos));
+  assert.ok(pos >= 0 && pos < MAZE_LENGTH);
+}
 assert.ok(first.replayEvents.length > 0, 'default seed should produce observable replay events');
 assert.deepEqual([...first.replayEvents].sort((a, b) => a - b), first.replayEvents);
 

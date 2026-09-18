@@ -88,7 +88,23 @@
       <div class="card-top">
         <h3 class="card-name">Replay Event & Synaptic Strength</h3>
       </div>
-      <canvas id="canvas" width="900" height="440" aria-label="Sleep-replay activity heatmap and learning curve"></canvas>
+      <div class="canvas-grid">
+        <figure class="span">
+          <canvas id="flight" width="900" height="220" aria-label="Fly running the maze with sleep-replay ripples"></canvas>
+          <figcaption>Live maze flight · the fly runs the corridor, gold rings mark SWR replays</figcaption>
+        </figure>
+        <figure class="span">
+          <canvas id="canvas" width="900" height="440" aria-label="Sleep-replay activity heatmap and learning curve"></canvas>
+          <figcaption>Hippocampal heatmap and Hebbian learning curve</figcaption>
+        </figure>
+      </div>
+      <div class="flight-controls">
+        <button id="playBtn" class="ghost-btn" type="button">Pause Flight</button>
+        <button id="pauseBtn" class="ghost-btn" type="button">Pause</button>
+        <button id="restartBtn" class="ghost-btn" type="button">Restart</button>
+        <button id="soundBtn" class="ghost-btn" type="button">Sound: On</button>
+      </div>
+      <p id="flight-caption" class="caption" aria-live="polite"></p>
       <pre id="telemetry" aria-live="polite"></pre>
     </section>
 
